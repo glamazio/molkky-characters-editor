@@ -1,0 +1,9 @@
+Ultimate Modular Women Pack, di Quaternius (quaternius.com)
+Pagina del pacchetto: https://quaternius.com/packs/ultimatemodularwomen.html
+Licenza: Creative Commons Zero (CC0 1.0), https://creativecommons.org/publicdomain/zero/1.0/
+Lo dichiara la pagina del pacchetto. Gli archivi scaricati il 15 novembre 2026
+(«Ultimate Modular Women Pack-glb.zip» e «-zip.zip») non contengono un file di licenza.
+
+File in modelli/quaternius-donna/ (GLB del pacchetto, rinominati):
+adventurer, casual (Animated Woman), formal (Animated Woman-nIItLV9nxS), medieval, punk,
+scifi (Sci Fi Character), soldier, suit, witch, worker.

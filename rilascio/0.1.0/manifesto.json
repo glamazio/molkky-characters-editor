@@ -1,0 +1,69 @@
+{
+ "versione": "0.1.0",
+ "nota": "Prova: un personaggio KayKit scelto a caso (Knight), solo riposo, esultanza e morte.",
+ "creato": "2026-11-15T17:24:44.536Z",
+ "personaggio": "Knight",
+ "riposo": "Idle_A",
+ "gesti": {
+  "esulta": "Cheering",
+  "morte": "Death_A"
+ },
+ "resta_a_terra": [
+  "morte"
+ ],
+ "modelli": {
+  "personaggio": "modelli/personaggio.glb",
+  "clip": "modelli/clip.glb"
+ },
+ "licenze": {
+  "KayKit (Kay Lousberg)": "CC0 1.0, licenze/KayKit.txt",
+  "three.js 0.153.0": "MIT, licenze/three.js.txt"
+ },
+ "file": [
+  {
+   "path": "CHANGELOG.md",
+   "bytes": 309,
+   "sha256": "08b21e74f86f7a9a355ec1e57b36dd449f5d2ca923a4bad0ca10e64453deb493"
+  },
+  {
+   "path": "avatar3d.js",
+   "bytes": 6035,
+   "sha256": "0a8dd09fd1b6dd585d5b705d120160bff1181e7b9be016ba04778a69fe6aa99f"
+  },
+  {
+   "path": "licenze/KayKit.txt",
+   "bytes": 1052,
+   "sha256": "e3b903c54a197c741143152be7b454c99ef65d78ca79e4f81c3fd27b8b89e77e"
+  },
+  {
+   "path": "licenze/three.js.txt",
+   "bytes": 1081,
+   "sha256": "852e0e8699169bf9f6fdc6bda3e682d078dcbc738b5d33e74df594721bff271d"
+  },
+  {
+   "path": "modelli/clip.glb",
+   "bytes": 77116,
+   "sha256": "09a4091ed99ce984636e1d09adec5cda325787e530afdd42b92b7d0b5349a9d9"
+  },
+  {
+   "path": "modelli/personaggio.glb",
+   "bytes": 339272,
+   "sha256": "af6641bd86f8bee95f0974482c851d21f87b05ca360fbbbcb8aa67151515262d"
+  },
+  {
+   "path": "three/BufferGeometryUtils.js",
+   "bytes": 31497,
+   "sha256": "a50b9ec97a920658ed758615d04c5903d95d57a3a905b775dcd8ec810b338272"
+  },
+  {
+   "path": "three/GLTFLoader.js",
+   "bytes": 104745,
+   "sha256": "571857c1e824889c71fa5dc59de97038c4da99b05bace863a3335df9e5d13b2f"
+  },
+  {
+   "path": "three/three.module.min.js",
+   "bytes": 644260,
+   "sha256": "469105809f806f3dda6198c913dd9ff131b36e5a979242914018107f0a5c5beb"
+  }
+ ]
+}

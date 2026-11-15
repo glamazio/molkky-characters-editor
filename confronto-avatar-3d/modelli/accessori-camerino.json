@@ -1,0 +1,14 @@
+[
+  {
+    "control": "cape",
+    "asset": "mantello-molkky.glb",
+    "socket": "back.center"
+  },
+  {
+    "control": "stick",
+    "asset": "bastone-molkky.glb",
+    "socket": "hand.right",
+    "scale": 0.5,
+    "grip": "cilindrica-55"
+  }
+]

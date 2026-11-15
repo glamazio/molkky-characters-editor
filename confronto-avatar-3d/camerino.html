@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Camerino 3D · Mölkky</title>
+  <style>
+    :root{color-scheme:dark;font:15px/1.5 system-ui,sans-serif;background:#0b1517;color:#f0f3e8;--muted:#b3c8be;--line:#35504b;--accent:#d8fa9c}
+    *{box-sizing:border-box}body{margin:0}main{width:min(1280px,100% - 36px);margin:24px auto 44px}
+    a{color:var(--accent)}p{margin:.45em 0;color:var(--muted)}
+    .top{display:flex;justify-content:space-between;align-items:start;gap:16px;margin-bottom:20px}
+    .eyebrow{color:var(--accent);text-transform:uppercase;font-weight:750;letter-spacing:.15em;font-size:.76rem}
+    h1{font-size:clamp(2.3rem,5vw,4.15rem);line-height:1;margin:.15em 0} h2{margin:0 0 8px;font-size:1.22rem}
+    .layout{display:grid;grid-template-columns:minmax(0,1.42fr) minmax(280px,1fr);gap:16px;align-items:start}
+    .stage,.closet,.notes{border:1px solid var(--line);border-radius:20px;background:#152526;overflow:hidden}
+    .stage{position:relative}.stage-bar{display:flex;justify-content:space-between;gap:10px;padding:10px 14px;border-top:1px solid var(--line);align-items:center;flex-wrap:wrap}
+    #view{height:clamp(425px,65vh,690px);touch-action:none;background:#203436;cursor:grab}#view:active{cursor:grabbing}canvas{display:block;width:100%;height:100%}
+    .caption{position:absolute;top:18px;left:18px;pointer-events:none}
+    .closet,.notes{padding:18px}.notes{margin-top:16px}.notes p{max-width:78ch}
+    fieldset{border:0;border-top:1px solid var(--line);margin:14px 0 0;padding:10px 0 0;min-width:0}legend{padding:0 8px 0 0;font-weight:720}
+    .options,.camera{display:flex;flex-wrap:wrap;gap:7px}
+    button,.option span{font:inherit;border:1px solid #4b6962;background:#233a39;color:#f0f3e8;border-radius:9px;padding:7px 11px;cursor:pointer}
+    button:hover,.option:hover span{border-color:#a5cf91}button:focus-visible,.option input:focus-visible+span{outline:2px solid white;outline-offset:2px}button:disabled{opacity:.55;cursor:default}
+    .option{position:relative}.option input{position:absolute;opacity:0;inset:0;margin:0;pointer-events:none}.option span{display:block}
+    .option input:checked+span{background:var(--accent);color:#122619;border-color:var(--accent);font-weight:680}
+    .option input:disabled+span{opacity:.55;cursor:default}
+    nav a[aria-current]{color:#f0f3e8;text-decoration:none;font-weight:700}[hidden]{display:none!important}
+    select{font:inherit;background:#233a39;color:#f0f3e8;border:1px solid #4b6962;border-radius:9px;padding:7px 11px;max-width:100%;margin-top:4px}
+    .small{font-size:.86rem}.stage-bar p{margin:0}code{color:var(--accent)}
+    @media(max-width:830px){.layout{grid-template-columns:1fr}#view{height:clamp(370px,55vh,550px)}}
+    @media(max-width:500px){main{width:calc(100% - 20px);margin-top:16px}.top{display:block}.top a{display:inline-block;margin-top:6px}#view{height:clamp(260px,37vh,340px)}.stage-bar,.closet{padding:12px}.caption{top:10px;left:12px}}
+    @media(max-width:830px) and (min-height:680px){html{scroll-padding-top:430px}.stage{position:sticky;top:4px;z-index:1}#view{height:clamp(260px,37vh,340px)}}
+  </style>
+  <script type="importmap">
+    {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.153.0/build/three.module.js","three/":"https://cdn.jsdelivr.net/npm/three@0.153.0/","@pixiv/three-vrm":"https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@2.1.2/lib/three-vrm.module.min.js","three-avatar":"https://cdn.jsdelivr.net/npm/@verseengine/three-avatar@1.0.2/dist/esm/index.js"}}
+  </script>
+</head>
+<body><main>
+  <header class="top">
+    <div><div class="eyebrow">Laboratorio Mölkky · Avatar 3D</div><h1>Camerino</h1><p id="intro">Combina i pezzi, equipaggia il personaggio e guardalo da ogni lato.</p></div>
+    <nav aria-label="Modelli" id="bases"><a href="./">Confronto dei modelli</a> · <a href="camerino.html" data-base="quaternius">Quaternius</a> · <a href="?base=verse" data-base="verse">VerseEngine</a> · <a href="?base=kaykit" data-base="kaykit">KayKit</a> · <a href="kaykit.html"><strong>Studio KayKit</strong></a> · <a href="?base=animati" data-base="animati">Animated</a> · <a href="?base=rpg" data-base="rpg">RPG</a> · <a href="creature.html">Creature</a> · <a href="animazioni.html">Animazioni</a></nav>
+  </header>
+  <div class="layout">
+    <section class="stage" aria-label="Anteprima del personaggio">
+      <div class="caption eyebrow" id="rig-label">Anteprima · Quaternius</div>
+      <div id="view"></div>
+      <div class="stage-bar">
+        <p id="status" class="small" role="status">Caricamento del camerino…</p>
+        <div class="camera"><button id="front">Davanti</button><button id="back">Dietro</button></div>
+      </div>
+    </section>
+    <form class="closet" id="closet" aria-label="Scelte del camerino">
+      <h2>Personalizza</h2>
+      <fieldset data-modes="verse" id="vrm-choice"><legend>Personaggio VRM</legend><div class="options" data-choices="vrm"></div>
+        <p class="small" id="vrm-license"></p>
+      </fieldset>
+      <fieldset data-modes="animati rpg" id="pg-choice"><legend>Personaggio</legend><div class="options" data-choices="pg"></div></fieldset>
+      <fieldset data-modes="animati" id="colori-choice"><legend>Colori dal profilo</legend><div class="options" data-choices="colori"></div>
+        <p class="small" id="colori-note">Carnagione, capelli e maglia dei soci disegnati nella tela, presi dalla caricatura 2D.</p>
+      </fieldset>
+      <fieldset data-modes="kaykit"><legend>Testa</legend><div class="options" data-choices="khead"></div></fieldset>
+      <fieldset data-modes="kaykit"><legend>Busto e braccia</legend><div class="options" data-choices="kbody"></div></fieldset>
+      <fieldset data-modes="kaykit"><legend>Gambe</legend><div class="options" data-choices="klegs"></div></fieldset>
+      <fieldset data-modes="kaykit"><legend>Pezzi del pacchetto</legend><div class="options">
+        <label class="option"><input type="checkbox" name="hat"><span>Copricapo della testa</span></label>
+        <label class="option"><input type="checkbox" name="kcape"><span>Mantello del busto</span></label>
+      </div></fieldset>
+      <fieldset data-modes="quaternius"><legend>Figura</legend><div class="options">
+        <label class="option"><input type="radio" name="figure" value="uomo" checked><span>Uomo</span></label>
+        <label class="option"><input type="radio" name="figure" value="donna"><span>Donna</span></label>
+      </div><p class="small">Le parti si combinano solo dentro la stessa figura: i due scheletri hanno proporzioni diverse.</p></fieldset>
+      <fieldset data-modes="quaternius" data-figure="donna" hidden><legend>Testa</legend><div class="options" data-choices="whead"></div></fieldset>
+      <fieldset data-modes="quaternius" data-figure="donna" hidden><legend>Parte sopra</legend><div class="options" data-choices="wbody"></div></fieldset>
+      <fieldset data-modes="quaternius" data-figure="donna" hidden><legend>Pantaloni e scarpe</legend><div class="options" data-choices="wlegs"></div></fieldset>
+      <fieldset data-modes="quaternius" data-figure="uomo"><legend>Testa</legend><div class="options">
+        <label class="option"><input type="radio" name="head" value="adventurer" checked><span>Avventuriero</span></label>
+        <label class="option"><input type="radio" name="head" value="hoodie"><span>Casual</span></label>
+        <label class="option"><input type="radio" name="head" value="farmer"><span>Contadino</span></label>
+      </div></fieldset>
+      <fieldset data-modes="quaternius" data-figure="uomo"><legend>Parte sopra</legend><div class="options">
+        <label class="option"><input type="radio" name="body" value="adventurer"><span>Completo</span></label>
+        <label class="option"><input type="radio" name="body" value="hoodie" checked><span>Felpa</span></label>
+        <label class="option"><input type="radio" name="body" value="farmer"><span>Da lavoro</span></label>
+      </div></fieldset>
+      <fieldset data-modes="quaternius" data-figure="uomo"><legend>Pantaloni e scarpe</legend><div class="options">
+        <label class="option"><input type="radio" name="legs" value="adventurer"><span>Completo</span></label>
+        <label class="option"><input type="radio" name="legs" value="hoodie" checked><span>Casual</span></label>
+        <label class="option"><input type="radio" name="legs" value="farmer"><span>Da lavoro</span></label>
+      </div></fieldset>
+      <fieldset><legend>Accessori Mölkky</legend><div class="options">
+        <label class="option" data-modes="quaternius"><input type="checkbox" name="cape"><span>Mantello</span></label>
+        <label class="option"><input type="checkbox" name="stick"><span>Bastone da lancio</span></label>
+      </div></fieldset>
+      <fieldset data-modes="quaternius"><legend>Superficie</legend><div class="options">
+        <label class="option"><input type="radio" name="shade" value="flat"><span>Facce piatte</span></label>
+        <label class="option"><input type="radio" name="shade" value="smooth" checked><span>Smussata</span></label>
+      </div></fieldset>
+      <fieldset data-modes="quaternius kaykit animati rpg"><legend>Movimento</legend><div class="options">
+        <label class="option"><input type="radio" name="motion" value="idle" checked><span>Riposo</span></label>
+        <label class="option" data-modes="kaykit animati"><input type="radio" name="motion" value="cheer"><span>Esulta</span></label>
+        <label class="option"><input type="radio" name="motion" value="static"><span>Fermo</span></label>
+        <label class="option" data-modes="kaykit"><input type="radio" name="motion" value="clip"><span>Clip scelta</span></label>
+      </div>
+      <div data-modes="kaykit"><label class="small" for="kclip" id="kclip-label">Tutte le clip del pacchetto</label><br><select id="kclip" name="kclip"></select>
+        <p class="small" id="kclip-note"></p></div></fieldset>
+      <fieldset id="throws" disabled><legend>Prova di lancio</legend>
+        <div class="options"><button type="button" data-throw="horizontal">Lancia orizzontale</button><button type="button" data-throw="baguette">Lancia a baguette</button><button type="button" data-throw="pack" data-modes="kaykit">Lancio del pacchetto</button></div>
+        <p class="small">Orizzontale: bastone di traverso alla traiettoria. Baguette: bastone nel senso del tiro.<span data-modes="kaykit"> Lancio del pacchetto: la clip «Throw» di KayKit, con il bastone nell'innesto delle armi.</span></p>
+      </fieldset>
+    </form>
+  </div>
+  <section class="notes">
+    <div data-modes="quaternius"><h2>Che cosa cambia con la superficie</h2>
+    <p>La modalità smussata interpola la luce tra facce vicine e lascia in evidenza gli spigoli più netti. La sagoma e le parti del modello restano le stesse. Per arrotondare anche il profilo servirebbe ritoccare la geometria in Blender.</p>
+    <p>Teste e vestiti provengono da <a href="https://quaternius.com/packs/ultimatemodularcharacters.html">Ultimate Modular Men</a> (<a href="modelli/Licenza-Quaternius.txt">CC0 incluso nel pack</a>) e da <a href="https://quaternius.com/packs/ultimatemodularwomen.html">Ultimate Modular Women</a> (CC0 dichiarato sulla pagina del pacchetto; i GLB della figura femminile hanno colori a tinta unita, senza texture). Il <a href="modelli/mantello-molkky.glb" download>mantello</a> e il <a href="modelli/bastone-molkky.glb" download>bastone</a> sono GLB originali montati sul petto e sul polso del rig. Il mantello segue il busto e non simula il tessuto.</p></div>
+    <div data-modes="verse"><h2>I personaggi VRM</h2>
+    <p>Il modello dimostrativo è © 2022 pixiv Inc. (<a href="https://vrm.dev/en/licenses/1.0/">VRM Public License 1.0</a>). Gli altri sedici vengono dalla serie <a href="https://github.com/toxsam/open-source-avatars">100Avatars</a> di Polygonal Mind: ogni file dichiara CC0 nei propri metadati e pesa da 1,1 a 3,1 MB, contro i 10 MB del demo. Tutti sono caricati con <a href="https://github.com/VerseEngine/three-avatar">three-avatar</a>.</p>
+    <p>Il bastone usa lo stesso adattatore sulle ossa umanoidi del VRM, calibrato sulla mano del demo. Sui 100Avatars le mani hanno proporzioni diverse: la presa può risultare larga o stretta, ed è proprio ciò che il confronto deve mostrare.</p></div>
+    <div data-modes="animati"><h2>I personaggi Animated</h2>
+    <p>Da Ultimate Animated Character Pack di Quaternius (<a href="modelli/Licenza-Quaternius-pacchetti.txt">CC0, licenza inclusa nel pacchetto</a>): 36 dei 49 personaggi, quasi tutti in coppia uomo e donna, da 0,9 a 1,3 MB l'uno. Ogni personaggio è una figura unica, senza parti da scambiare, con mani a pugno.</p>
+    <p>Nei colori originali testa e mani sono nere a silhouette, con occhi bianchi: è lo stile scelto dall'autore, uguale nell'anteprima del pacchetto. I colori sono a tinta unita e i materiali hanno nomi come <code>Skin</code>, <code>Hair</code>, <code>Shirt</code>: per questo carnagione, capelli e maglia del profilo si applicano direttamente e la figura diventa una persona riconoscibile. Occhiali e barba non ci sono: andrebbero aggiunti come pezzi da agganciare alla testa.</p></div>
+    <div data-modes="rpg"><h2>Le classi RPG</h2>
+    <p>Da RPG Characters di Quaternius (<a href="modelli/Licenza-Quaternius-pacchetti.txt">CC0, licenza inclusa nel pacchetto</a>): sei classi con texture dipinta. L'aspetto potrebbe seguire la classe del personaggio, che nasce dall'attributo più alto. Le armi del pacchetto sono nascoste e il bastone prende la loro posa sull'osso <code>Weapon.R</code>.</p>
+    <p>Le texture non si ricolorano per zone: i colori del profilo qui non si applicano.</p></div>
+    <div data-modes="kaykit"><h2>I personaggi KayKit</h2>
+    <p>Da <a href="https://github.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0">KayKit Adventurers 1.0</a> di Kay Lousberg (<a href="modelli/Licenza-KayKit.txt">CC0 incluso nel pacchetto</a>). I cinque personaggi condividono lo scheletro: testa, busto e gambe si prendono da personaggi diversi, come con Quaternius. Il pacchetto ha 76 clip, fra cui riposo, esultanza e lancio.</p>
+    <p>Le mani sono a moffola, senza dita: il bastone entra nell'innesto <code>handslot.r</code> che il pacchetto usa per spade e bacchette, senza chiudere la presa. Le armi del pacchetto restano nascoste.</p></div>
+    <h2>Come un asset chiede una presa</h2>
+    <p>Il <a href="modelli/accessori-camerino.json">manifesto degli accessori</a> assegna al bastone lo slot <code>hand.right</code> e il profilo <code>cilindrica-55</code>. Il GLB ha l’origine al centro dell’impugnatura e l’asse Z lungo il bastone. L’adattatore del rig posiziona l’oggetto e chiude le dita mentre l’animazione muove il braccio. Togliendo il bastone, la mano si riapre.</p>
+    <p>Il profilo è calibrato per un’impugnatura da 55 mm. Un oggetto con diametro o forma diversi richiede un profilo compatibile e una verifica nelle pose in cui verrà usato.</p>
+    <p>Le due prove di lancio usano la stessa presa. È il polso a orientare il bastone. Al rilascio l’asset esce dall’innesto e le dita si aprono, mentre il bastone prosegue su una traiettoria dimostrativa.</p>
+  </section>
+</main>
+<script type="module">
+  import('./camerino.js').catch(error => {
+    document.querySelector('#status').textContent = 'Avvio fallito. Apri la pagina dal server locale e verifica la connessione a Three.js.';
+    console.error(error);
+  });
+</script>
+</body>
+</html>

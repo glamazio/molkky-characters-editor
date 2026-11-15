@@ -1,0 +1,128 @@
+{
+  "versione": "0.5.0",
+  "nota": "Prova: gesto «disperato» per i compagni nei momenti negativi.",
+  "personaggi": "tutti",
+  "escludi": [],
+  "predefinito": "Knight",
+  "nomi": {
+    "Barbarian": "Barbaro",
+    "Barbarian_Large": "Barbaro grande",
+    "Druid": "Druido",
+    "Engineer": "Ingegnere",
+    "Knight": "Cavaliere",
+    "Mage": "Mago",
+    "Ranger": "Ranger",
+    "Rogue": "Ladro",
+    "Rogue_Hooded": "Ladro incappucciato"
+  },
+  "gesti": {
+    "bel_tiro": "12",
+    "salvataggio": "Salvataggio",
+    "vittoria": "Vittoria",
+    "zero": "Zero",
+    "sforo": "Sballo",
+    "sconfitta": "Sconfitta",
+    "lancio": "Lancio",
+    "disperato": "Disperato"
+  },
+  "scheletri": {
+    "medium": {
+      "riposo": "Idle_A",
+      "gesti": {
+        "bel_tiro": {
+          "clip": [
+            "Cheering"
+          ]
+        },
+        "salvataggio": {
+          "clip": [
+            "Skeletons_Death_Resurrect"
+          ]
+        },
+        "vittoria": {
+          "clip": [
+            "Jump_Full_Short",
+            "Skeletons_Taunt_Longer"
+          ]
+        },
+        "zero": {
+          "clip": [
+            "Hit_B"
+          ]
+        },
+        "sforo": {
+          "clip": [
+            "Sit_Floor_Down",
+            "Sit_Floor_StandUp"
+          ]
+        },
+        "sconfitta": {
+          "clip": [
+            "Death_A"
+          ],
+          "poi": "fermo"
+        },
+        "lancio": {
+          "clip": [
+            "Throw"
+          ]
+        },
+        "disperato": {
+          "clip": [
+            "Hit_A"
+          ],
+          "poi": "Skeletons_Inactive_Standing_Pose"
+        }
+      }
+    },
+    "large": {
+      "riposo": "Idle_A",
+      "gesti": {
+        "bel_tiro": {
+          "clip": [
+            "Flexing"
+          ]
+        },
+        "salvataggio": {
+          "clip": [
+            "Melee_Block_Hit",
+            "Flexing"
+          ]
+        },
+        "vittoria": {
+          "clip": [
+            "Melee_Unarmed_Smash",
+            "Flexing"
+          ]
+        },
+        "zero": {
+          "clip": [
+            "Hit_A"
+          ]
+        },
+        "sforo": {
+          "clip": [
+            "Hit_A",
+            "Dodge_Backwards"
+          ]
+        },
+        "sconfitta": {
+          "clip": [
+            "Death_A"
+          ],
+          "poi": "fermo"
+        },
+        "lancio": {
+          "clip": [
+            "Melee_2H_Slam"
+          ]
+        },
+        "disperato": {
+          "clip": [
+            "Melee_Block_Hit"
+          ]
+        }
+      }
+    }
+  }
+}

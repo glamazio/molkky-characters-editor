@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="it">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bozza — moduli e connettori dell’avatar</title>
+<style>
+:root{font:16px/1.5 system-ui,sans-serif;color:#182534;background:#eef2f5}*{box-sizing:border-box}body{margin:0;padding:28px 18px 60px}.page{max-width:1100px;margin:auto}h1,h2{line-height:1.15}h1{font-size:clamp(2rem,5vw,3.5rem);margin:.2em 0}.lead{font-size:1.15rem;color:#536474;max-width:760px}.grid{display:grid;grid-template-columns:minmax(300px,1.1fr) minmax(280px,.9fr);gap:18px;margin-top:24px}.card{background:white;border:1px solid #d4dde5;border-radius:18px;padding:20px;box-shadow:0 8px 24px #2233440b}.figure{display:flex;justify-content:center;min-height:430px;background:linear-gradient(#f9fbfc,#edf3f7);border-radius:14px;overflow:hidden}.figure svg{width:min(100%,440px);height:auto}.node{fill:#fff;stroke:#e35c4b;stroke-width:2}.node.optional{stroke:#b7791f;stroke-dasharray:4 3}.label{font:12px system-ui;fill:#36485a}.legend{display:flex;gap:14px;flex-wrap:wrap;color:#536474;font-size:.9rem}.dot{display:inline-block;width:11px;height:11px;border-radius:50%;background:#e35c4b;margin-right:5px}.dot.optional{background:#b7791f}.switches{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.switches button{border:1px solid #cad5df;background:#f7f9fb;color:#203040;padding:9px 13px;border-radius:99px;cursor:pointer;font:inherit}.switches button[aria-pressed=true]{background:#203e59;color:white;border-color:#203e59}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#13202c;color:#d7e8f4;padding:16px;border-radius:12px;font:13px/1.5 ui-monospace,monospace}.muted{color:#5a6b78}.wide{grid-column:1/-1}.tag{display:inline-block;background:#e7edf2;border-radius:6px;padding:2px 7px;font:12px ui-monospace,monospace}.parts{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.part{border:1px solid #d5dee6;border-radius:12px;padding:12px}.part b{display:block}.off{display:none}@media(max-width:760px){.grid{grid-template-columns:1fr}.wide{grid-column:auto}.figure{min-height:350px}.parts{grid-template-columns:1fr}}
+</style>
+<main class="page">
+<p class="muted">Mölkky · esplorazione tecnica · 8 novembre 2026</p>
+<h1>Avatar a moduli</h1>
+<p class="lead">Bozza per discutere come pezzi grafici indipendenti si agganciano a un corpo comune. È uno schema 2D: i cerchi rossi sono porte anatomiche, i cerchi ambra sono ancoraggi per accessori.</p>
+<div class="grid">
+<section class="card"><h2>Composizione</h2><div class="switches" aria-label="Mostra moduli"><button aria-pressed="true" data-part="wings">Ali</button><button aria-pressed="true" data-part="cape">Mantello</button><button aria-pressed="true" data-part="medal">Medaglia</button><button aria-pressed="true" data-part="skeleton">Porte</button></div>
+<div class="figure"><svg viewBox="0 0 360 440" role="img" aria-label="Figura schematica composta da moduli con porte di connessione">
+<!-- Ali dietro --> <g id="wings"><path d="M158 164 Q105 112 47 97 Q73 143 53 186 Q101 178 151 206Z" fill="#91c9c2" stroke="#327b78" stroke-width="3"/><path d="M202 164 Q255 112 313 97 Q287 143 307 186 Q259 178 209 206Z" fill="#91c9c2" stroke="#327b78" stroke-width="3"/><path d="M158 164Q111 140 75 119M202 164Q249 140 285 119" fill="none" stroke="#fff" stroke-width="3"/></g>
+<!-- mantello --> <g id="cape"><path d="M143 165 Q180 183 217 165 L248 326 Q181 354 112 326Z" fill="#a992cc" opacity=".8" stroke="#70599b" stroke-width="3"/></g>
+<!-- corpo base --> <g id="skeleton"><circle cx="180" cy="83" r="39" fill="#f0c6a5" stroke="#263747" stroke-width="4"/><path d="M155 119 L143 145 L124 268 L153 278 L164 206 L168 270 L192 270 L196 206 L207 278 L236 268 L217 145 L205 119Z" fill="#e6a15b" stroke="#263747" stroke-width="4"/><path d="M145 146 L115 218 L126 225 L159 174 M215 146 L245 218 L234 225 L201 174" fill="none" stroke="#f0c6a5" stroke-width="17" stroke-linecap="round"/><path d="M168 270 L162 364 L181 364 L181 279 M192 270 L199 364 L218 364 L207 270" fill="#465c78" stroke="#263747" stroke-width="4"/><path d="M160 364h27v12h-33q0-8 6-12zm39 0h21q9 4 10 12h-29z" fill="#263747"/><path d="M148 148h64l-6 65h-52z" fill="#e96856" stroke="#263747" stroke-width="3"/><path d="M160 150v45m40-45v45" stroke="#f4b27e" stroke-width="4"/></g>
+<!-- medaglia/accessorio --> <g id="medal"><path d="M185 158l18 9" stroke="#273746" stroke-width="3"/><circle cx="207" cy="170" r="11" fill="#f6ce55" stroke="#8c6b14" stroke-width="3"/><path d="m207 163 2 5 5 .5-4 3.5 1 5-4-2.5-4 2.5 1-5-4-3.5 5-.5z" fill="#fff4c2"/></g>
+<!-- porte sovrapposte --> <g id="ports"><circle class="node" cx="158" cy="135" r="6"/><circle class="node" cx="202" cy="135" r="6"/><circle class="node" cx="180" cy="120" r="6"/><circle class="node" cx="158" cy="169" r="6"/><circle class="node" cx="202" cy="169" r="6"/><circle class="node optional" cx="180" cy="169" r="6"/><circle class="node optional" cx="207" cy="170" r="6"/><text class="label" x="218" y="175">petto</text><text class="label" x="211" y="130">spalle</text><text class="label" x="185" y="117">collo</text></g>
+</svg></div><div class="legend"><span><i class="dot"></i>porta anatomica</span><span><i class="dot optional"></i>ancoraggio accessorio</span></div></section>
+<section class="card"><h2>Vocabolario iniziale delle porte</h2><div class="parts"><div class="part"><b>Testa</b><span class="tag">collo</span> <span class="tag">testa.top</span> <span class="tag">occhio.sx/dx</span></div><div class="part"><b>Torso</b><span class="tag">collo</span> <span class="tag">spalla.sx/dx</span> <span class="tag">anca.sx/dx</span> <span class="tag">schiena</span></div><div class="part"><b>Braccio</b><span class="tag">spalla</span> <span class="tag">gomito</span> <span class="tag">polso</span></div><div class="part"><b>Bacino/gambe</b><span class="tag">anca.sx/dx</span> <span class="tag">ginocchio</span> <span class="tag">caviglia</span></div><div class="part"><b>Ali / mantello</b><span class="tag">schiena</span> oppure <span class="tag">spalla.sx/dx</span></div><div class="part"><b>Oggetti / medaglie</b><span class="tag">presa</span> <span class="tag">petto</span> <span class="tag">spalla</span></div></div><p class="muted">Ogni porta ha posizione e orientamento locali. In 2D una porta allinea posizione e angolo; due porte possono vincolare anche la scala. La forma esterna resta libera, ma il bordo vicino all’attacco va disegnato per sovrapporsi bene.</p></section>
+<section class="card wide"><h2>Esempio di manifesto modulo</h2><p class="muted">L’asset contiene il disegno. Il manifesto dice cosa offre, cosa richiede e in quale ordine si disegna. Il renderer non deve conoscere le regole di sblocco.</p><pre>{
+  "id": "ali.fantasia.base",
+  "version": 1,
+  "asset": "ali-fantasia.svg",
+  "slot": "schiena",
+  "requires": [
+    { "port": "attacco_sx", "connectsTo": "torso.spalla_sx" },
+    { "port": "attacco_dx", "connectsTo": "torso.spalla_dx" }
+  ],
+  "ports": {
+    "attacco_sx": { "x": 28, "y": 46, "angle": 155 },
+    "attacco_dx": { "x": 92, "y": 46, "angle": 25 }
+  },
+  "drawOrder": 20,
+  "tags": ["fantasy", "ali"]
+}</pre></section>
+<section class="card wide"><h2>Perimetro della bozza</h2><p>La proposta iniziale è uno scheletro 2D canonico con slot e porte nominati, SVG come asset e un compositore che applica trasformazioni e ordine dei livelli. Non è un sistema di rig completo: pose e deformazioni si aggiungono solo se servono animazioni articolate.</p><p class="muted">La medaglia è un accessorio ancorato al petto; l’eventuale regola che la sblocca appartiene al motore di progressione e non al manifesto grafico.</p></section>
+</div></main>
+<script>document.querySelectorAll('.switches button').forEach(function(b){b.addEventListener('click',function(){var on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',String(on));document.getElementById(b.dataset.part).classList.toggle('off',!on);});});</script>
+</html>

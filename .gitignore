@@ -1,0 +1,12 @@
+# Pacchetti di modelli scaricati: pesanti e già pubblici. Fonti e licenze sono scritte in CLAUDE.md e nei file Licenza-*.txt.
+confronto-avatar-3d/modelli/**/*.glb
+confronto-avatar-3d/modelli/**/*.gltf
+confronto-avatar-3d/modelli/**/*.vrm
+confronto-avatar-3d/modelli/**/*.fbx
+confronto-avatar-3d/modelli/**/*.zip
+confronto-avatar-3d/modelli/**/*.png
+confronto-avatar-3d/modelli/Textures/
+!confronto-avatar-3d/modelli/*-molkky.glb
+node_modules/
+# Copie di sicurezza automatiche di Blender
+*.blend1

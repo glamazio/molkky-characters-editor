@@ -1,0 +1,145 @@
+{
+ "versione": "0.2.0",
+ "nota": "Prova: scelta fra i personaggi interi di KayKit Adventurers 2.0 (scheletro medio), rotazione col dito, riposo, esultanza e morte.",
+ "creato": "2026-11-15T18:39:22.303Z",
+ "predefinito": "Knight",
+ "personaggi": [
+  {
+   "id": "Barbarian",
+   "nome": "Barbaro",
+   "file": "modelli/personaggi/Barbarian.glb"
+  },
+  {
+   "id": "Druid",
+   "nome": "Druido",
+   "file": "modelli/personaggi/Druid.glb"
+  },
+  {
+   "id": "Engineer",
+   "nome": "Ingegnere",
+   "file": "modelli/personaggi/Engineer.glb"
+  },
+  {
+   "id": "Knight",
+   "nome": "Cavaliere",
+   "file": "modelli/personaggi/Knight.glb"
+  },
+  {
+   "id": "Mage",
+   "nome": "Mago",
+   "file": "modelli/personaggi/Mage.glb"
+  },
+  {
+   "id": "Ranger",
+   "nome": "Ranger",
+   "file": "modelli/personaggi/Ranger.glb"
+  },
+  {
+   "id": "Rogue",
+   "nome": "Ladro",
+   "file": "modelli/personaggi/Rogue.glb"
+  },
+  {
+   "id": "Rogue_Hooded",
+   "nome": "Ladro incappucciato",
+   "file": "modelli/personaggi/Rogue_Hooded.glb"
+  }
+ ],
+ "riposo": "Idle_A",
+ "gesti": {
+  "esulta": "Cheering",
+  "morte": "Death_A"
+ },
+ "resta_a_terra": [
+  "morte"
+ ],
+ "modelli": {
+  "clip": "modelli/clip.glb"
+ },
+ "licenze": {
+  "KayKit (Kay Lousberg)": "CC0 1.0, licenze/KayKit.txt",
+  "three.js 0.153.0": "MIT, licenze/three.js.txt"
+ },
+ "file": [
+  {
+   "path": "CHANGELOG.md",
+   "bytes": 794,
+   "sha256": "27119208e7d2b16a2ef1ba3dc244073922fa0f43c0d37b10fadc9bcf2b05dee9"
+  },
+  {
+   "path": "avatar3d.js",
+   "bytes": 8390,
+   "sha256": "03ded4668d63f522586d762bf80766761af95477269870f98abf8dc7c78ca1cb"
+  },
+  {
+   "path": "licenze/KayKit.txt",
+   "bytes": 1052,
+   "sha256": "e3b903c54a197c741143152be7b454c99ef65d78ca79e4f81c3fd27b8b89e77e"
+  },
+  {
+   "path": "licenze/three.js.txt",
+   "bytes": 1081,
+   "sha256": "852e0e8699169bf9f6fdc6bda3e682d078dcbc738b5d33e74df594721bff271d"
+  },
+  {
+   "path": "modelli/clip.glb",
+   "bytes": 77116,
+   "sha256": "09a4091ed99ce984636e1d09adec5cda325787e530afdd42b92b7d0b5349a9d9"
+  },
+  {
+   "path": "modelli/personaggi/Barbarian.glb",
+   "bytes": 384456,
+   "sha256": "888a4d3d32e51d0462d8b3ddad2aa371f04f65525afd69f52d3866f1f273580d"
+  },
+  {
+   "path": "modelli/personaggi/Druid.glb",
+   "bytes": 463608,
+   "sha256": "d87bd44d98c59cb64b78770e4827de09fb412158312ae7f1174c07fec48bad92"
+  },
+  {
+   "path": "modelli/personaggi/Engineer.glb",
+   "bytes": 453148,
+   "sha256": "de74a5772c6c0cd299b2653472663633e1ad4f0c6e8dcf5e8b639bc84bc90760"
+  },
+  {
+   "path": "modelli/personaggi/Knight.glb",
+   "bytes": 339272,
+   "sha256": "af6641bd86f8bee95f0974482c851d21f87b05ca360fbbbcb8aa67151515262d"
+  },
+  {
+   "path": "modelli/personaggi/Mage.glb",
+   "bytes": 350164,
+   "sha256": "26e9fd963316ca7b9cf129d93f95b66fceb3c75de16d45cac4327016e3bc6d81"
+  },
+  {
+   "path": "modelli/personaggi/Ranger.glb",
+   "bytes": 482404,
+   "sha256": "74b5cf7b08cd7a5ff8f71cedc5e13a65881bddf1834b4f5eea03b5fcab952ede"
+  },
+  {
+   "path": "modelli/personaggi/Rogue.glb",
+   "bytes": 406992,
+   "sha256": "9ab28bc38c03d439c98d51a5491587719bd18f0cc243a7fbac8f88603910d213"
+  },
+  {
+   "path": "modelli/personaggi/Rogue_Hooded.glb",
+   "bytes": 379060,
+   "sha256": "3c327624766ff67a5e33a77bffe338fa744a9575d88c60be832287ef1e51710c"
+  },
+  {
+   "path": "three/BufferGeometryUtils.js",
+   "bytes": 31497,
+   "sha256": "a50b9ec97a920658ed758615d04c5903d95d57a3a905b775dcd8ec810b338272"
+  },
+  {
+   "path": "three/GLTFLoader.js",
+   "bytes": 104745,
+   "sha256": "571857c1e824889c71fa5dc59de97038c4da99b05bace863a3335df9e5d13b2f"
+  },
+  {
+   "path": "three/three.module.min.js",
+   "bytes": 644260,
+   "sha256": "469105809f806f3dda6198c913dd9ff131b36e5a979242914018107f0a5c5beb"
+  }
+ ]
+}

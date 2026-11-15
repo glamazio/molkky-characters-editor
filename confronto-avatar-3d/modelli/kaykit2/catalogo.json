@@ -1,0 +1,380 @@
+[
+ {
+  "id": "Barbarian",
+  "label": "Barbarian",
+  "rig": "medium",
+  "pack": "Adventurers 2.0"
+ },
+ {
+  "id": "Barbarian_Large",
+  "label": "Barbarian Large",
+  "rig": "large",
+  "pack": "Adventurers 2.0"
+ },
+ {
+  "id": "Druid",
+  "label": "Druid",
+  "rig": "medium",
+  "pack": "Adventurers 2.0"
+ },
+ {
+  "id": "Engineer",
+  "label": "Engineer",
+  "rig": "medium",
+  "pack": "Adventurers 2.0"
+ },
+ {
+  "id": "Knight",
+  "label": "Knight",
+  "rig": "medium",
+  "pack": "Adventurers 2.0"
+ },
+ {
+  "id": "Mage",
+  "label": "Mage",
+  "rig": "medium",
+  "pack": "Adventurers 2.0"
+ },
+ {
+  "id": "Ranger",
+  "label": "Ranger",
+  "rig": "medium",
+  "pack": "Adventurers 2.0"
+ },
+ {
+  "id": "Rogue",
+  "label": "Rogue",
+  "rig": "medium",
+  "pack": "Adventurers 2.0"
+ },
+ {
+  "id": "Rogue_Hooded",
+  "label": "Rogue Hooded",
+  "rig": "medium",
+  "pack": "Adventurers 2.0"
+ },
+ {
+  "id": "Necromancer",
+  "label": "Necromancer",
+  "rig": "medium",
+  "pack": "Skeletons 1.1"
+ },
+ {
+  "id": "Skeleton_Golem",
+  "label": "Skeleton Golem",
+  "rig": "large",
+  "pack": "Skeletons 1.1"
+ },
+ {
+  "id": "Skeleton_Mage",
+  "label": "Skeleton Mage",
+  "rig": "medium",
+  "pack": "Skeletons 1.1"
+ },
+ {
+  "id": "Skeleton_Minion",
+  "label": "Skeleton Minion",
+  "rig": "medium",
+  "pack": "Skeletons 1.1"
+ },
+ {
+  "id": "Skeleton_Rogue",
+  "label": "Skeleton Rogue",
+  "rig": "medium",
+  "pack": "Skeletons 1.1"
+ },
+ {
+  "id": "Skeleton_Warrior",
+  "label": "Skeleton Warrior",
+  "rig": "medium",
+  "pack": "Skeletons 1.1"
+ },
+ {
+  "id": "Mannequin_Large",
+  "label": "Mannequin Large",
+  "rig": "large",
+  "pack": "Character Animations 1.1"
+ },
+ {
+  "id": "Mannequin_Medium",
+  "label": "Mannequin Medium",
+  "rig": "medium",
+  "pack": "Character Animations 1.1"
+ },
+ {
+  "id": "ActionFigure",
+  "label": "ActionFigure",
+  "rig": "medium",
+  "pack": "Mystery Monthly 4"
+ },
+ {
+  "id": "Animatronic_Creepy",
+  "label": "Animatronic Creepy",
+  "rig": "medium",
+  "pack": "Mystery Monthly 4"
+ },
+ {
+  "id": "Animatronic_Normal",
+  "label": "Animatronic Normal",
+  "rig": "medium",
+  "pack": "Mystery Monthly 4"
+ },
+ {
+  "id": "Clown",
+  "label": "Clown",
+  "rig": "medium",
+  "pack": "Mystery Monthly 4"
+ },
+ {
+  "id": "Driver",
+  "label": "Driver",
+  "rig": "medium",
+  "pack": "Mystery Monthly 4"
+ },
+ {
+  "id": "Monster",
+  "label": "Monster",
+  "rig": "medium",
+  "pack": "Mystery Monthly 4"
+ },
+ {
+  "id": "MonsterCostume",
+  "label": "MonsterCostume",
+  "rig": "medium",
+  "pack": "Mystery Monthly 4"
+ },
+ {
+  "id": "Ninja",
+  "label": "Ninja",
+  "rig": "medium",
+  "pack": "Mystery Monthly 4"
+ },
+ {
+  "id": "OrcRaider",
+  "label": "OrcRaider",
+  "rig": "medium",
+  "pack": "Mystery Monthly 4"
+ },
+ {
+  "id": "Paladin",
+  "label": "Paladin",
+  "rig": "medium",
+  "pack": "Mystery Monthly 4"
+ },
+ {
+  "id": "Paladin_with_Helmet",
+  "label": "Paladin with Helmet",
+  "rig": "medium",
+  "pack": "Mystery Monthly 4"
+ },
+ {
+  "id": "Robot_One",
+  "label": "Robot One",
+  "rig": "medium",
+  "pack": "Mystery Monthly 4"
+ },
+ {
+  "id": "Robot_Two",
+  "label": "Robot Two",
+  "rig": "medium",
+  "pack": "Mystery Monthly 4"
+ },
+ {
+  "id": "SpaceRanger",
+  "label": "SpaceRanger",
+  "rig": "medium",
+  "pack": "Mystery Monthly 4"
+ },
+ {
+  "id": "SpaceRanger_FlightMode",
+  "label": "SpaceRanger FlightMode",
+  "rig": "medium",
+  "pack": "Mystery Monthly 4"
+ },
+ {
+  "id": "Survivalist",
+  "label": "Survivalist",
+  "rig": "medium",
+  "pack": "Mystery Monthly 4"
+ },
+ {
+  "id": "Werewolf_Man",
+  "label": "Werewolf Man",
+  "rig": "medium",
+  "pack": "Mystery Monthly 4"
+ },
+ {
+  "id": "Werewolf_Wolf",
+  "label": "Werewolf Wolf",
+  "rig": "medium",
+  "pack": "Mystery Monthly 4"
+ },
+ {
+  "id": "BlackKnight",
+  "label": "BlackKnight",
+  "rig": "large",
+  "pack": "Mystery Monthly 5"
+ },
+ {
+  "id": "Caveman",
+  "label": "Caveman",
+  "rig": "medium",
+  "pack": "Mystery Monthly 5"
+ },
+ {
+  "id": "Clanker",
+  "label": "Clanker",
+  "rig": "large",
+  "pack": "Mystery Monthly 5"
+ },
+ {
+  "id": "CombatMech",
+  "label": "CombatMech",
+  "rig": "medium",
+  "pack": "Mystery Monthly 5"
+ },
+ {
+  "id": "FrostGolem",
+  "label": "FrostGolem",
+  "rig": "large",
+  "pack": "Mystery Monthly 5"
+ },
+ {
+  "id": "Helper_A",
+  "label": "Helper A",
+  "rig": "medium",
+  "pack": "Mystery Monthly 5"
+ },
+ {
+  "id": "Helper_B",
+  "label": "Helper B",
+  "rig": "medium",
+  "pack": "Mystery Monthly 5"
+ },
+ {
+  "id": "Hiker",
+  "label": "Hiker",
+  "rig": "medium",
+  "pack": "Mystery Monthly 5"
+ },
+ {
+  "id": "Protagonist_A",
+  "label": "Protagonist A",
+  "rig": "medium",
+  "pack": "Mystery Monthly 5"
+ },
+ {
+  "id": "Protagonist_B",
+  "label": "Protagonist B",
+  "rig": "medium",
+  "pack": "Mystery Monthly 5"
+ },
+ {
+  "id": "Superhero",
+  "label": "Superhero",
+  "rig": "medium",
+  "pack": "Mystery Monthly 5"
+ },
+ {
+  "id": "Tiefling",
+  "label": "Tiefling",
+  "rig": "medium",
+  "pack": "Mystery Monthly 5"
+ },
+ {
+  "id": "Vampire",
+  "label": "Vampire",
+  "rig": "medium",
+  "pack": "Mystery Monthly 5"
+ },
+ {
+  "id": "Witch",
+  "label": "Witch",
+  "rig": "medium",
+  "pack": "Mystery Monthly 5"
+ },
+ {
+  "id": "4GTN",
+  "label": "4GTN",
+  "rig": "large",
+  "pack": "Mystery Monthly 6"
+ },
+ {
+  "id": "4GTN_Forgotten",
+  "label": "4GTN Forgotten",
+  "rig": "large",
+  "pack": "Mystery Monthly 6"
+ },
+ {
+  "id": "AvianSwordsman",
+  "label": "AvianSwordsman",
+  "rig": "medium",
+  "pack": "Mystery Monthly 6"
+ },
+ {
+  "id": "Cleric",
+  "label": "Cleric",
+  "rig": "medium",
+  "pack": "Mystery Monthly 6"
+ },
+ {
+  "id": "Farmer_A",
+  "label": "Farmer A",
+  "rig": "medium",
+  "pack": "Mystery Monthly 6"
+ },
+ {
+  "id": "Farmer_B",
+  "label": "Farmer B",
+  "rig": "medium",
+  "pack": "Mystery Monthly 6"
+ },
+ {
+  "id": "Hoarder",
+  "label": "Hoarder",
+  "rig": "medium",
+  "pack": "Mystery Monthly 6"
+ },
+ {
+  "id": "Lorekeeper",
+  "label": "Lorekeeper",
+  "rig": "medium",
+  "pack": "Mystery Monthly 6"
+ },
+ {
+  "id": "MagicalGirl",
+  "label": "MagicalGirl",
+  "rig": "medium",
+  "pack": "Mystery Monthly 6"
+ },
+ {
+  "id": "Marksman",
+  "label": "Marksman",
+  "rig": "medium",
+  "pack": "Mystery Monthly 6"
+ },
+ {
+  "id": "Monstrosity",
+  "label": "Monstrosity",
+  "rig": "large",
+  "pack": "Mystery Monthly 6"
+ },
+ {
+  "id": "OrcBrute",
+  "label": "OrcBrute",
+  "rig": "large",
+  "pack": "Mystery Monthly 6"
+ },
+ {
+  "id": "PlantWarrior",
+  "label": "PlantWarrior",
+  "rig": "medium",
+  "pack": "Mystery Monthly 6"
+ },
+ {
+  "id": "ToySoldier",
+  "label": "ToySoldier",
+  "rig": "medium",
+  "pack": "Mystery Monthly 6"
+ }
+]

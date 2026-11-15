@@ -1,0 +1,915 @@
+{
+ "versione": "0.4.0",
+ "nota": "Prova: gesti distinti per i sei momenti della partita e scena unica con più personaggi.",
+ "creato": "2026-11-15T19:18:43.238Z",
+ "predefinito": "Knight",
+ "personaggi": [
+  {
+   "id": "Barbarian",
+   "nome": "Barbaro",
+   "gruppo": "Adventurers 2.0",
+   "rig": "medium",
+   "file": "modelli/personaggi/Barbarian.glb"
+  },
+  {
+   "id": "Barbarian_Large",
+   "nome": "Barbaro grande",
+   "gruppo": "Adventurers 2.0",
+   "rig": "large",
+   "file": "modelli/personaggi/Barbarian_Large.glb"
+  },
+  {
+   "id": "Druid",
+   "nome": "Druido",
+   "gruppo": "Adventurers 2.0",
+   "rig": "medium",
+   "file": "modelli/personaggi/Druid.glb"
+  },
+  {
+   "id": "Engineer",
+   "nome": "Ingegnere",
+   "gruppo": "Adventurers 2.0",
+   "rig": "medium",
+   "file": "modelli/personaggi/Engineer.glb"
+  },
+  {
+   "id": "Knight",
+   "nome": "Cavaliere",
+   "gruppo": "Adventurers 2.0",
+   "rig": "medium",
+   "file": "modelli/personaggi/Knight.glb"
+  },
+  {
+   "id": "Mage",
+   "nome": "Mago",
+   "gruppo": "Adventurers 2.0",
+   "rig": "medium",
+   "file": "modelli/personaggi/Mage.glb"
+  },
+  {
+   "id": "Ranger",
+   "nome": "Ranger",
+   "gruppo": "Adventurers 2.0",
+   "rig": "medium",
+   "file": "modelli/personaggi/Ranger.glb"
+  },
+  {
+   "id": "Rogue",
+   "nome": "Ladro",
+   "gruppo": "Adventurers 2.0",
+   "rig": "medium",
+   "file": "modelli/personaggi/Rogue.glb"
+  },
+  {
+   "id": "Rogue_Hooded",
+   "nome": "Ladro incappucciato",
+   "gruppo": "Adventurers 2.0",
+   "rig": "medium",
+   "file": "modelli/personaggi/Rogue_Hooded.glb"
+  },
+  {
+   "id": "Necromancer",
+   "nome": "Necromancer",
+   "gruppo": "Skeletons 1.1",
+   "rig": "medium",
+   "file": "modelli/personaggi/Necromancer.glb"
+  },
+  {
+   "id": "Skeleton_Golem",
+   "nome": "Skeleton Golem",
+   "gruppo": "Skeletons 1.1",
+   "rig": "large",
+   "file": "modelli/personaggi/Skeleton_Golem.glb"
+  },
+  {
+   "id": "Skeleton_Mage",
+   "nome": "Skeleton Mage",
+   "gruppo": "Skeletons 1.1",
+   "rig": "medium",
+   "file": "modelli/personaggi/Skeleton_Mage.glb"
+  },
+  {
+   "id": "Skeleton_Minion",
+   "nome": "Skeleton Minion",
+   "gruppo": "Skeletons 1.1",
+   "rig": "medium",
+   "file": "modelli/personaggi/Skeleton_Minion.glb"
+  },
+  {
+   "id": "Skeleton_Rogue",
+   "nome": "Skeleton Rogue",
+   "gruppo": "Skeletons 1.1",
+   "rig": "medium",
+   "file": "modelli/personaggi/Skeleton_Rogue.glb"
+  },
+  {
+   "id": "Skeleton_Warrior",
+   "nome": "Skeleton Warrior",
+   "gruppo": "Skeletons 1.1",
+   "rig": "medium",
+   "file": "modelli/personaggi/Skeleton_Warrior.glb"
+  },
+  {
+   "id": "Mannequin_Large",
+   "nome": "Mannequin Large",
+   "gruppo": "Character Animations 1.1",
+   "rig": "large",
+   "file": "modelli/personaggi/Mannequin_Large.glb"
+  },
+  {
+   "id": "Mannequin_Medium",
+   "nome": "Mannequin Medium",
+   "gruppo": "Character Animations 1.1",
+   "rig": "medium",
+   "file": "modelli/personaggi/Mannequin_Medium.glb"
+  },
+  {
+   "id": "ActionFigure",
+   "nome": "ActionFigure",
+   "gruppo": "Mystery Monthly 4",
+   "rig": "medium",
+   "file": "modelli/personaggi/ActionFigure.glb"
+  },
+  {
+   "id": "Animatronic_Creepy",
+   "nome": "Animatronic Creepy",
+   "gruppo": "Mystery Monthly 4",
+   "rig": "medium",
+   "file": "modelli/personaggi/Animatronic_Creepy.glb"
+  },
+  {
+   "id": "Animatronic_Normal",
+   "nome": "Animatronic Normal",
+   "gruppo": "Mystery Monthly 4",
+   "rig": "medium",
+   "file": "modelli/personaggi/Animatronic_Normal.glb"
+  },
+  {
+   "id": "Clown",
+   "nome": "Clown",
+   "gruppo": "Mystery Monthly 4",
+   "rig": "medium",
+   "file": "modelli/personaggi/Clown.glb"
+  },
+  {
+   "id": "Driver",
+   "nome": "Driver",
+   "gruppo": "Mystery Monthly 4",
+   "rig": "medium",
+   "file": "modelli/personaggi/Driver.glb"
+  },
+  {
+   "id": "Monster",
+   "nome": "Monster",
+   "gruppo": "Mystery Monthly 4",
+   "rig": "medium",
+   "file": "modelli/personaggi/Monster.glb"
+  },
+  {
+   "id": "MonsterCostume",
+   "nome": "MonsterCostume",
+   "gruppo": "Mystery Monthly 4",
+   "rig": "medium",
+   "file": "modelli/personaggi/MonsterCostume.glb"
+  },
+  {
+   "id": "Ninja",
+   "nome": "Ninja",
+   "gruppo": "Mystery Monthly 4",
+   "rig": "medium",
+   "file": "modelli/personaggi/Ninja.glb"
+  },
+  {
+   "id": "OrcRaider",
+   "nome": "OrcRaider",
+   "gruppo": "Mystery Monthly 4",
+   "rig": "medium",
+   "file": "modelli/personaggi/OrcRaider.glb"
+  },
+  {
+   "id": "Paladin",
+   "nome": "Paladin",
+   "gruppo": "Mystery Monthly 4",
+   "rig": "medium",
+   "file": "modelli/personaggi/Paladin.glb"
+  },
+  {
+   "id": "Paladin_with_Helmet",
+   "nome": "Paladin with Helmet",
+   "gruppo": "Mystery Monthly 4",
+   "rig": "medium",
+   "file": "modelli/personaggi/Paladin_with_Helmet.glb"
+  },
+  {
+   "id": "Robot_One",
+   "nome": "Robot One",
+   "gruppo": "Mystery Monthly 4",
+   "rig": "medium",
+   "file": "modelli/personaggi/Robot_One.glb"
+  },
+  {
+   "id": "Robot_Two",
+   "nome": "Robot Two",
+   "gruppo": "Mystery Monthly 4",
+   "rig": "medium",
+   "file": "modelli/personaggi/Robot_Two.glb"
+  },
+  {
+   "id": "SpaceRanger",
+   "nome": "SpaceRanger",
+   "gruppo": "Mystery Monthly 4",
+   "rig": "medium",
+   "file": "modelli/personaggi/SpaceRanger.glb"
+  },
+  {
+   "id": "SpaceRanger_FlightMode",
+   "nome": "SpaceRanger FlightMode",
+   "gruppo": "Mystery Monthly 4",
+   "rig": "medium",
+   "file": "modelli/personaggi/SpaceRanger_FlightMode.glb"
+  },
+  {
+   "id": "Survivalist",
+   "nome": "Survivalist",
+   "gruppo": "Mystery Monthly 4",
+   "rig": "medium",
+   "file": "modelli/personaggi/Survivalist.glb"
+  },
+  {
+   "id": "Werewolf_Man",
+   "nome": "Werewolf Man",
+   "gruppo": "Mystery Monthly 4",
+   "rig": "medium",
+   "file": "modelli/personaggi/Werewolf_Man.glb"
+  },
+  {
+   "id": "Werewolf_Wolf",
+   "nome": "Werewolf Wolf",
+   "gruppo": "Mystery Monthly 4",
+   "rig": "medium",
+   "file": "modelli/personaggi/Werewolf_Wolf.glb"
+  },
+  {
+   "id": "BlackKnight",
+   "nome": "BlackKnight",
+   "gruppo": "Mystery Monthly 5",
+   "rig": "large",
+   "file": "modelli/personaggi/BlackKnight.glb"
+  },
+  {
+   "id": "Caveman",
+   "nome": "Caveman",
+   "gruppo": "Mystery Monthly 5",
+   "rig": "medium",
+   "file": "modelli/personaggi/Caveman.glb"
+  },
+  {
+   "id": "Clanker",
+   "nome": "Clanker",
+   "gruppo": "Mystery Monthly 5",
+   "rig": "large",
+   "file": "modelli/personaggi/Clanker.glb"
+  },
+  {
+   "id": "CombatMech",
+   "nome": "CombatMech",
+   "gruppo": "Mystery Monthly 5",
+   "rig": "medium",
+   "file": "modelli/personaggi/CombatMech.glb"
+  },
+  {
+   "id": "FrostGolem",
+   "nome": "FrostGolem",
+   "gruppo": "Mystery Monthly 5",
+   "rig": "large",
+   "file": "modelli/personaggi/FrostGolem.glb"
+  },
+  {
+   "id": "Helper_A",
+   "nome": "Helper A",
+   "gruppo": "Mystery Monthly 5",
+   "rig": "medium",
+   "file": "modelli/personaggi/Helper_A.glb"
+  },
+  {
+   "id": "Helper_B",
+   "nome": "Helper B",
+   "gruppo": "Mystery Monthly 5",
+   "rig": "medium",
+   "file": "modelli/personaggi/Helper_B.glb"
+  },
+  {
+   "id": "Hiker",
+   "nome": "Hiker",
+   "gruppo": "Mystery Monthly 5",
+   "rig": "medium",
+   "file": "modelli/personaggi/Hiker.glb"
+  },
+  {
+   "id": "Protagonist_A",
+   "nome": "Protagonist A",
+   "gruppo": "Mystery Monthly 5",
+   "rig": "medium",
+   "file": "modelli/personaggi/Protagonist_A.glb"
+  },
+  {
+   "id": "Protagonist_B",
+   "nome": "Protagonist B",
+   "gruppo": "Mystery Monthly 5",
+   "rig": "medium",
+   "file": "modelli/personaggi/Protagonist_B.glb"
+  },
+  {
+   "id": "Superhero",
+   "nome": "Superhero",
+   "gruppo": "Mystery Monthly 5",
+   "rig": "medium",
+   "file": "modelli/personaggi/Superhero.glb"
+  },
+  {
+   "id": "Tiefling",
+   "nome": "Tiefling",
+   "gruppo": "Mystery Monthly 5",
+   "rig": "medium",
+   "file": "modelli/personaggi/Tiefling.glb"
+  },
+  {
+   "id": "Vampire",
+   "nome": "Vampire",
+   "gruppo": "Mystery Monthly 5",
+   "rig": "medium",
+   "file": "modelli/personaggi/Vampire.glb"
+  },
+  {
+   "id": "Witch",
+   "nome": "Witch",
+   "gruppo": "Mystery Monthly 5",
+   "rig": "medium",
+   "file": "modelli/personaggi/Witch.glb"
+  },
+  {
+   "id": "4GTN",
+   "nome": "4GTN",
+   "gruppo": "Mystery Monthly 6",
+   "rig": "large",
+   "file": "modelli/personaggi/4GTN.glb"
+  },
+  {
+   "id": "4GTN_Forgotten",
+   "nome": "4GTN Forgotten",
+   "gruppo": "Mystery Monthly 6",
+   "rig": "large",
+   "file": "modelli/personaggi/4GTN_Forgotten.glb"
+  },
+  {
+   "id": "AvianSwordsman",
+   "nome": "AvianSwordsman",
+   "gruppo": "Mystery Monthly 6",
+   "rig": "medium",
+   "file": "modelli/personaggi/AvianSwordsman.glb"
+  },
+  {
+   "id": "Cleric",
+   "nome": "Cleric",
+   "gruppo": "Mystery Monthly 6",
+   "rig": "medium",
+   "file": "modelli/personaggi/Cleric.glb"
+  },
+  {
+   "id": "Farmer_A",
+   "nome": "Farmer A",
+   "gruppo": "Mystery Monthly 6",
+   "rig": "medium",
+   "file": "modelli/personaggi/Farmer_A.glb"
+  },
+  {
+   "id": "Farmer_B",
+   "nome": "Farmer B",
+   "gruppo": "Mystery Monthly 6",
+   "rig": "medium",
+   "file": "modelli/personaggi/Farmer_B.glb"
+  },
+  {
+   "id": "Hoarder",
+   "nome": "Hoarder",
+   "gruppo": "Mystery Monthly 6",
+   "rig": "medium",
+   "file": "modelli/personaggi/Hoarder.glb"
+  },
+  {
+   "id": "Lorekeeper",
+   "nome": "Lorekeeper",
+   "gruppo": "Mystery Monthly 6",
+   "rig": "medium",
+   "file": "modelli/personaggi/Lorekeeper.glb"
+  },
+  {
+   "id": "MagicalGirl",
+   "nome": "MagicalGirl",
+   "gruppo": "Mystery Monthly 6",
+   "rig": "medium",
+   "file": "modelli/personaggi/MagicalGirl.glb"
+  },
+  {
+   "id": "Marksman",
+   "nome": "Marksman",
+   "gruppo": "Mystery Monthly 6",
+   "rig": "medium",
+   "file": "modelli/personaggi/Marksman.glb"
+  },
+  {
+   "id": "Monstrosity",
+   "nome": "Monstrosity",
+   "gruppo": "Mystery Monthly 6",
+   "rig": "large",
+   "file": "modelli/personaggi/Monstrosity.glb"
+  },
+  {
+   "id": "OrcBrute",
+   "nome": "OrcBrute",
+   "gruppo": "Mystery Monthly 6",
+   "rig": "large",
+   "file": "modelli/personaggi/OrcBrute.glb"
+  },
+  {
+   "id": "PlantWarrior",
+   "nome": "PlantWarrior",
+   "gruppo": "Mystery Monthly 6",
+   "rig": "medium",
+   "file": "modelli/personaggi/PlantWarrior.glb"
+  },
+  {
+   "id": "ToySoldier",
+   "nome": "ToySoldier",
+   "gruppo": "Mystery Monthly 6",
+   "rig": "medium",
+   "file": "modelli/personaggi/ToySoldier.glb"
+  }
+ ],
+ "gesti": {
+  "bel_tiro": "12",
+  "salvataggio": "Salvataggio",
+  "vittoria": "Vittoria",
+  "zero": "Zero",
+  "sforo": "Sballo",
+  "sconfitta": "Sconfitta",
+  "lancio": "Lancio"
+ },
+ "scheletri": {
+  "medium": {
+   "riposo": "Idle_A",
+   "gesti": {
+    "bel_tiro": {
+     "clip": [
+      "Cheering"
+     ]
+    },
+    "salvataggio": {
+     "clip": [
+      "Skeletons_Death_Resurrect"
+     ]
+    },
+    "vittoria": {
+     "clip": [
+      "Jump_Full_Short",
+      "Skeletons_Taunt_Longer"
+     ]
+    },
+    "zero": {
+     "clip": [
+      "Hit_B"
+     ]
+    },
+    "sforo": {
+     "clip": [
+      "Sit_Floor_Down",
+      "Sit_Floor_StandUp"
+     ]
+    },
+    "sconfitta": {
+     "clip": [
+      "Death_A"
+     ],
+     "poi": "fermo"
+    },
+    "lancio": {
+     "clip": [
+      "Throw"
+     ]
+    }
+   },
+   "clip": "modelli/clip-medium.glb"
+  },
+  "large": {
+   "riposo": "Idle_A",
+   "gesti": {
+    "bel_tiro": {
+     "clip": [
+      "Flexing"
+     ]
+    },
+    "salvataggio": {
+     "clip": [
+      "Melee_Block_Hit",
+      "Flexing"
+     ]
+    },
+    "vittoria": {
+     "clip": [
+      "Melee_Unarmed_Smash",
+      "Flexing"
+     ]
+    },
+    "zero": {
+     "clip": [
+      "Hit_A"
+     ]
+    },
+    "sforo": {
+     "clip": [
+      "Hit_A",
+      "Dodge_Backwards"
+     ]
+    },
+    "sconfitta": {
+     "clip": [
+      "Death_A"
+     ],
+     "poi": "fermo"
+    },
+    "lancio": {
+     "clip": [
+      "Melee_2H_Slam"
+     ]
+    }
+   },
+   "clip": "modelli/clip-large.glb"
+  }
+ },
+ "licenze": {
+  "KayKit (Kay Lousberg)": "CC0 1.0, licenze/KayKit.txt",
+  "three.js 0.153.0": "MIT, licenze/three.js.txt"
+ },
+ "file": [
+  {
+   "path": "CHANGELOG.md",
+   "bytes": 2060,
+   "sha256": "7038d03d9285b0d9da78b81196c9e77185265c07e787afb04e72e79f85704b23"
+  },
+  {
+   "path": "avatar3d.js",
+   "bytes": 12250,
+   "sha256": "fbeb53f544d339a9cd20068262f4288466b8921a56bf8d228ca10a9c54402c9a"
+  },
+  {
+   "path": "licenze/KayKit.txt",
+   "bytes": 1052,
+   "sha256": "e3b903c54a197c741143152be7b454c99ef65d78ca79e4f81c3fd27b8b89e77e"
+  },
+  {
+   "path": "licenze/three.js.txt",
+   "bytes": 1081,
+   "sha256": "852e0e8699169bf9f6fdc6bda3e682d078dcbc738b5d33e74df594721bff271d"
+  },
+  {
+   "path": "modelli/clip-large.glb",
+   "bytes": 254212,
+   "sha256": "e4bf0530a36918e71fd3193c36c4205ec448d8432d24548f6538f077159a8bde"
+  },
+  {
+   "path": "modelli/clip-medium.glb",
+   "bytes": 275672,
+   "sha256": "69655df08e8f56cb052c01f2f4f15b1b13041d366561442c81a00c821386ede6"
+  },
+  {
+   "path": "modelli/personaggi/4GTN.glb",
+   "bytes": 893784,
+   "sha256": "bf76b81453434e35a3bf11d7301dddd1804cb4cc2506d5a4be6f31f5ea8e4eb0"
+  },
+  {
+   "path": "modelli/personaggi/4GTN_Forgotten.glb",
+   "bytes": 1202688,
+   "sha256": "04bf10193e3f617676a2f443bdc483bf2a9cf369059ef5aa81ab5b538936d5ae"
+  },
+  {
+   "path": "modelli/personaggi/ActionFigure.glb",
+   "bytes": 448472,
+   "sha256": "c59cc6eabefef9ec6aa943c2feb069e04b94c23786717fc8eeb94c4d0c21d981"
+  },
+  {
+   "path": "modelli/personaggi/Animatronic_Creepy.glb",
+   "bytes": 333488,
+   "sha256": "632b7368c27e13b5ca52a51610e945216ac6bffc58f375312bceb1d0ca985aba"
+  },
+  {
+   "path": "modelli/personaggi/Animatronic_Normal.glb",
+   "bytes": 265604,
+   "sha256": "757efb3422777d692634acd8a7aebfcbd48d79f9bd723b33957b0274ddbe40c0"
+  },
+  {
+   "path": "modelli/personaggi/AvianSwordsman.glb",
+   "bytes": 367784,
+   "sha256": "405a5dba9086e896dfe74326aba8f616cf961a9bae853a59f2034817b1f1ec2a"
+  },
+  {
+   "path": "modelli/personaggi/Barbarian.glb",
+   "bytes": 384456,
+   "sha256": "888a4d3d32e51d0462d8b3ddad2aa371f04f65525afd69f52d3866f1f273580d"
+  },
+  {
+   "path": "modelli/personaggi/Barbarian_Large.glb",
+   "bytes": 684636,
+   "sha256": "3c699c635fafd3672eab7d3f9338412b7345fe8147f880b3533e14a41b750be5"
+  },
+  {
+   "path": "modelli/personaggi/BlackKnight.glb",
+   "bytes": 492672,
+   "sha256": "11791b6d71851fda84bec59dffe541b2c05597293341fe12362cad549edf4f44"
+  },
+  {
+   "path": "modelli/personaggi/Caveman.glb",
+   "bytes": 237820,
+   "sha256": "ee2c0c8e8f45c1a0496b4680faec20c03455a35d2a14f42df74cbcf75ef17ac6"
+  },
+  {
+   "path": "modelli/personaggi/Clanker.glb",
+   "bytes": 1573052,
+   "sha256": "a51a57ceacea787dcc903d1c2281111e26a8b37c1c66d95993b39517462703e8"
+  },
+  {
+   "path": "modelli/personaggi/Cleric.glb",
+   "bytes": 481320,
+   "sha256": "03e4da11706bd9dab7418ddc3f6f567ddf5b29ae797527f65b1c097dbe4fedf4"
+  },
+  {
+   "path": "modelli/personaggi/Clown.glb",
+   "bytes": 275312,
+   "sha256": "3013a05a51ad85ca8ab22245fa6acd82c6c3faf44e9b698227267976512ed6d2"
+  },
+  {
+   "path": "modelli/personaggi/CombatMech.glb",
+   "bytes": 658424,
+   "sha256": "34333b068bfd3105542ce4c62bebae326dbaafc1b37151700ae6066697475750"
+  },
+  {
+   "path": "modelli/personaggi/Driver.glb",
+   "bytes": 194264,
+   "sha256": "5fbed6e647fa6499249406d807fadc86e34304f808102764306773a7aef40c50"
+  },
+  {
+   "path": "modelli/personaggi/Druid.glb",
+   "bytes": 463608,
+   "sha256": "d87bd44d98c59cb64b78770e4827de09fb412158312ae7f1174c07fec48bad92"
+  },
+  {
+   "path": "modelli/personaggi/Engineer.glb",
+   "bytes": 453148,
+   "sha256": "de74a5772c6c0cd299b2653472663633e1ad4f0c6e8dcf5e8b639bc84bc90760"
+  },
+  {
+   "path": "modelli/personaggi/Farmer_A.glb",
+   "bytes": 332508,
+   "sha256": "9f4a165cc6c21968669cc7a3c7e7052776ef92b27f5bca6fc4450991285efc89"
+  },
+  {
+   "path": "modelli/personaggi/Farmer_B.glb",
+   "bytes": 388652,
+   "sha256": "4f37e19e989e9acf14b7dc45c2f89444c424abf346f56b6dda07d312ede780bc"
+  },
+  {
+   "path": "modelli/personaggi/FrostGolem.glb",
+   "bytes": 927776,
+   "sha256": "5bda610dfb26399066c7e08d64dbd0c6584b4b9e0a068a38ae3201cbf4337711"
+  },
+  {
+   "path": "modelli/personaggi/Helper_A.glb",
+   "bytes": 263460,
+   "sha256": "67f52d68c3cd2ed0572f94865d1faaaf40a888f3badd8a2542c7f914f6824845"
+  },
+  {
+   "path": "modelli/personaggi/Helper_B.glb",
+   "bytes": 252876,
+   "sha256": "3616ebee68528a12d5f747926df7b6e3b98181c3c875ec3d1267823213d00eb1"
+  },
+  {
+   "path": "modelli/personaggi/Hiker.glb",
+   "bytes": 546452,
+   "sha256": "b20c3d8c770c76314d8e37f914f3be3eadf43e1547e37c51e3cca12af7044f0d"
+  },
+  {
+   "path": "modelli/personaggi/Hoarder.glb",
+   "bytes": 1211244,
+   "sha256": "0e5af46bbef9def07da96cb2fa823d538780166f918467f0431c33ad9b69aaef"
+  },
+  {
+   "path": "modelli/personaggi/Knight.glb",
+   "bytes": 339272,
+   "sha256": "af6641bd86f8bee95f0974482c851d21f87b05ca360fbbbcb8aa67151515262d"
+  },
+  {
+   "path": "modelli/personaggi/Lorekeeper.glb",
+   "bytes": 581480,
+   "sha256": "32f878b541d7f593bb0160e86521b3836fd5541ea889a568d51b055b3127df0b"
+  },
+  {
+   "path": "modelli/personaggi/Mage.glb",
+   "bytes": 350164,
+   "sha256": "26e9fd963316ca7b9cf129d93f95b66fceb3c75de16d45cac4327016e3bc6d81"
+  },
+  {
+   "path": "modelli/personaggi/MagicalGirl.glb",
+   "bytes": 435676,
+   "sha256": "686aafec55829f9b87f058b204b8c90e8979f5659b29b10f65abd84a7ef9bb8a"
+  },
+  {
+   "path": "modelli/personaggi/Mannequin_Large.glb",
+   "bytes": 540020,
+   "sha256": "e2133ad461ecd4f100b5a314e94aac113a03fc45a179539744d122edb001b393"
+  },
+  {
+   "path": "modelli/personaggi/Mannequin_Medium.glb",
+   "bytes": 418320,
+   "sha256": "958562a5036d5b4dc78443382c9e2ff11bddef1633a7f573494eeedaa811739b"
+  },
+  {
+   "path": "modelli/personaggi/Marksman.glb",
+   "bytes": 662316,
+   "sha256": "90f3915656f396672ec4436d0114ef8896c37870845dadb4eaf1efc8dcbd9050"
+  },
+  {
+   "path": "modelli/personaggi/Monster.glb",
+   "bytes": 220172,
+   "sha256": "54062b192537f4bfb714de308e7c51d22ebc01a9ba8c3c49dc09f8967d6fdaed"
+  },
+  {
+   "path": "modelli/personaggi/MonsterCostume.glb",
+   "bytes": 242616,
+   "sha256": "a94d7705c9c3b97b4888ac4de281f791d597b4c69c972ef48b6213c56e916c37"
+  },
+  {
+   "path": "modelli/personaggi/Monstrosity.glb",
+   "bytes": 652648,
+   "sha256": "e988eabdeff1403b1125123e5aeb3dadb313dc2a857eed5a6f57e45a4eb4693c"
+  },
+  {
+   "path": "modelli/personaggi/Necromancer.glb",
+   "bytes": 406136,
+   "sha256": "5b14c4176d40e15d3d15f86e42b9c5a24cc66d1f66f8cfbfe7eb54c0c7d35eca"
+  },
+  {
+   "path": "modelli/personaggi/Ninja.glb",
+   "bytes": 275496,
+   "sha256": "4c5e070908f79508d40a06ce4472f087c8ce66e47e3d6f9fc3b13d57d38daa41"
+  },
+  {
+   "path": "modelli/personaggi/OrcBrute.glb",
+   "bytes": 752444,
+   "sha256": "6772fff417b47a1f3b624c892f33b46907bcb86b8e6e8a761aa019f3aca38f65"
+  },
+  {
+   "path": "modelli/personaggi/OrcRaider.glb",
+   "bytes": 291632,
+   "sha256": "08690987f86497a0aa0eb297d6722a8e2bf076f2a7ff6b1a363e9a03141a4418"
+  },
+  {
+   "path": "modelli/personaggi/Paladin.glb",
+   "bytes": 303604,
+   "sha256": "82d49eade0f8ce29dc8d544b4a2acef2084ed8f7ab51b34ffa5b5102d022512e"
+  },
+  {
+   "path": "modelli/personaggi/Paladin_with_Helmet.glb",
+   "bytes": 351948,
+   "sha256": "df4959d8880323ccf8511739b3f9a9541bb54b417b2afa07504756f93413257a"
+  },
+  {
+   "path": "modelli/personaggi/PlantWarrior.glb",
+   "bytes": 372252,
+   "sha256": "420f90cb202d48d685bcd2d1b9e0ef186cf1748f1c6e15d38cbcac8632fbd4ad"
+  },
+  {
+   "path": "modelli/personaggi/Protagonist_A.glb",
+   "bytes": 508708,
+   "sha256": "06b30797c65d011fb1c05b0875e48b660bf2b8ab0c7fa529d463c5dc71279ad0"
+  },
+  {
+   "path": "modelli/personaggi/Protagonist_B.glb",
+   "bytes": 459336,
+   "sha256": "ae6bb19f3291e040c1b81be00d163dbe79c3177406bf5fe3d65a1c43c74c4874"
+  },
+  {
+   "path": "modelli/personaggi/Ranger.glb",
+   "bytes": 482404,
+   "sha256": "74b5cf7b08cd7a5ff8f71cedc5e13a65881bddf1834b4f5eea03b5fcab952ede"
+  },
+  {
+   "path": "modelli/personaggi/Robot_One.glb",
+   "bytes": 367260,
+   "sha256": "9d513e9bc66462f0c6168473fc8a9ec6fb5cf28defb537e78e71eda3ffd6f377"
+  },
+  {
+   "path": "modelli/personaggi/Robot_Two.glb",
+   "bytes": 355596,
+   "sha256": "25145a01606d7239c54f4aa28058fd7797555666c241722121bd8444a4b422df"
+  },
+  {
+   "path": "modelli/personaggi/Rogue.glb",
+   "bytes": 406992,
+   "sha256": "9ab28bc38c03d439c98d51a5491587719bd18f0cc243a7fbac8f88603910d213"
+  },
+  {
+   "path": "modelli/personaggi/Rogue_Hooded.glb",
+   "bytes": 379060,
+   "sha256": "3c327624766ff67a5e33a77bffe338fa744a9575d88c60be832287ef1e51710c"
+  },
+  {
+   "path": "modelli/personaggi/Skeleton_Golem.glb",
+   "bytes": 395096,
+   "sha256": "1364d105025814f609c692d8df4ce90ada7e6c89a6d0e74d730c73803e00ff25"
+  },
+  {
+   "path": "modelli/personaggi/Skeleton_Mage.glb",
+   "bytes": 266756,
+   "sha256": "a2cdcc32a382a3e54808a28c52a3d4f7a04c427b45de771e23791d83dab19b30"
+  },
+  {
+   "path": "modelli/personaggi/Skeleton_Minion.glb",
+   "bytes": 319612,
+   "sha256": "96906b7f21dae53664a0a7a5a350e80ae04c58e6fbd126cac885bab4f931f57e"
+  },
+  {
+   "path": "modelli/personaggi/Skeleton_Rogue.glb",
+   "bytes": 332152,
+   "sha256": "2d3e54835358b7e6028fa44a0b4319bec0214995ff2452e206da9364e4058e3b"
+  },
+  {
+   "path": "modelli/personaggi/Skeleton_Warrior.glb",
+   "bytes": 368444,
+   "sha256": "683c09b403c80ec26fd3fe1818364e201df8d1a6d1a1646df932cf10059b70d7"
+  },
+  {
+   "path": "modelli/personaggi/SpaceRanger.glb",
+   "bytes": 307612,
+   "sha256": "214bb90883fd8de06cf305888c2c20f629660a32d814d2191ca1ec84bedd8335"
+  },
+  {
+   "path": "modelli/personaggi/SpaceRanger_FlightMode.glb",
+   "bytes": 410820,
+   "sha256": "b53c7e80c7a835660d7088d2e755b0a532c71f07da666b9a8ae22de211a87d0e"
+  },
+  {
+   "path": "modelli/personaggi/Superhero.glb",
+   "bytes": 211760,
+   "sha256": "a7f2dc5f4a4901b271cc0babd914e6533c16a4f70f783500f61b522fcd6a59ed"
+  },
+  {
+   "path": "modelli/personaggi/Survivalist.glb",
+   "bytes": 365384,
+   "sha256": "0881b541083d3f080fb39952d8a8530eb30f86c49a445a89e75cec00d28b7d5d"
+  },
+  {
+   "path": "modelli/personaggi/Tiefling.glb",
+   "bytes": 522928,
+   "sha256": "4f7992ceb550254cdbebbc6a3c4543e835f9fd7be6ca1cd4fd0e657889c40235"
+  },
+  {
+   "path": "modelli/personaggi/ToySoldier.glb",
+   "bytes": 415708,
+   "sha256": "e7837d47ca3b3226b0b108e8c26d5b54f069d54eac83d3e285520b59c55b16be"
+  },
+  {
+   "path": "modelli/personaggi/Vampire.glb",
+   "bytes": 345856,
+   "sha256": "90d8fe4c64248f0786e6ce7be80e6e86f28dfa7011407715ea70a4e928372f95"
+  },
+  {
+   "path": "modelli/personaggi/Werewolf_Man.glb",
+   "bytes": 206828,
+   "sha256": "25f6fb01abd76e024239c80ecbd2b34f1c32c84bff0b35022e678310c2b78e07"
+  },
+  {
+   "path": "modelli/personaggi/Werewolf_Wolf.glb",
+   "bytes": 227992,
+   "sha256": "d74cff74ba9274cf3e5d16a247e979488f57f4d7bd2cff1ef9e8bfb192a68028"
+  },
+  {
+   "path": "modelli/personaggi/Witch.glb",
+   "bytes": 317596,
+   "sha256": "afae463f4dbc91cdb4a2b46d5734df955c13b850b8f5a59c8793be97debdee35"
+  },
+  {
+   "path": "three/BufferGeometryUtils.js",
+   "bytes": 31497,
+   "sha256": "a50b9ec97a920658ed758615d04c5903d95d57a3a905b775dcd8ec810b338272"
+  },
+  {
+   "path": "three/GLTFLoader.js",
+   "bytes": 104745,
+   "sha256": "571857c1e824889c71fa5dc59de97038c4da99b05bace863a3335df9e5d13b2f"
+  },
+  {
+   "path": "three/three.module.min.js",
+   "bytes": 644260,
+   "sha256": "469105809f806f3dda6198c913dd9ff131b36e5a979242914018107f0a5c5beb"
+  }
+ ]
+}

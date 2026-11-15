@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mölkky · Confronto avatar 3D</title>
+<style>
+  :root{color-scheme:dark;font:16px/1.5 system-ui,sans-serif;background:#101d20;color:#ecf3eb}
+  *{box-sizing:border-box} body{margin:0} main{width:min(1200px,100% - 36px);margin:34px auto 60px}
+  .kicker{font-weight:700;color:#bce982;letter-spacing:.14em;text-transform:uppercase;font-size:.75rem}
+  h1{margin:.1em 0;font-size:clamp(2rem,5vw,4rem);line-height:1.1} h2{margin-top:0}
+  p{color:#b7c9c8} a{color:#c3ef90} button,select{font:inherit;color:inherit}
+  button,select{background:#26383b;border:1px solid #45605e;border-radius:9px;padding:9px 14px}
+  button{cursor:pointer} button:disabled{opacity:.5;cursor:default} button[aria-pressed=true]{background:#c3ef90;color:#142a21;border-color:#c3ef90}
+  .choices,.tools{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+  .lab{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(260px,1fr);gap:16px}
+  .stage,.panel,.notes{border:1px solid #3a5353;border-radius:16px;background:#192a2d;overflow:hidden}
+  #view{height:clamp(360px,60vh,590px);position:relative;background:#26383b;touch-action:none}
+  canvas{display:block;width:100%;height:100%} #status{padding:0 16px;min-height:1.5em}
+  .panel,.notes{padding:20px}.notes{margin-top:16px} label{display:grid;gap:5px;margin-bottom:10px}
+  [hidden]{display:none!important} .small{font-size:.9rem} code{color:#d7eea9}
+  @media(max-width:740px){.lab{grid-template-columns:1fr} main{margin-top:22px}}
+</style>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.153.0/build/three.module.js",
+    "three/": "https://cdn.jsdelivr.net/npm/three@0.153.0/",
+    "@pixiv/three-vrm": "https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@2.1.2/lib/three-vrm.module.min.js",
+    "three-avatar": "https://cdn.jsdelivr.net/npm/@verseengine/three-avatar@1.0.2/dist/esm/index.js"
+  }
+}
+</script>
+</head>
+<body><main>
+  <div class="kicker">Laboratorio Mölkky · 3D</div>
+  <h1>Tre strade per l’avatar</h1>
+  <p><a href="camerino.html">Prova il camerino Quaternius</a> · <a href="camerino.html?base=kaykit">Camerino KayKit (CC0, a parti)</a> · <a href="kaykit.html"><strong>Studio KayKit</strong>: 63 personaggi e librerie di clip</a> · <a href="camerino.html?base=animati">Animated con i colori del profilo</a> · <a href="camerino.html?base=rpg">Classi RPG</a> · <a href="creature.html">Creature che evolvono</a> · <a href="animazioni.html">Tutte le animazioni</a></p>
+  <p>Ruota il personaggio trascinandolo. Prova le parti originali dei pack e monta lo stesso accessorio Mölkky su ciascuna base.</p>
+  <nav class="choices" aria-label="Scegli la prova">
+    <button data-mode="q" aria-pressed="true">Quaternius</button>
+    <button data-mode="k" aria-pressed="false">Kenney</button>
+    <button data-mode="v" aria-pressed="false">VerseEngine</button>
+  </nav>
+  <div class="lab">
+    <section class="stage" aria-label="Anteprima 3D">
+      <div id="view"></div>
+      <p id="status" role="status">Caricamento del visualizzatore…</p>
+    </section>
+    <section class="panel" aria-label="Controlli del personaggio">
+      <h2 id="name">Quaternius</h2>
+      <p id="description"></p>
+      <div id="q-options">
+        <label>Testa <select id="head"><option value="head">Adventurer</option><option value="alt">Casual Hoodie</option></select></label>
+        <label>Movimento <select id="q-motion"><option value="idle">Riposo</option><option value="static">Posa del rig</option></select></label>
+        <label><span><input type="checkbox" id="pack"> Zaino originale Adventurer</span></label>
+      </div>
+      <div id="k-options" hidden>
+        <label>Personaggio <select id="character"><option value="a">Modello A</option><option value="n">Modello N</option></select></label>
+        <label>Movimento <select id="animation"><option value="idle">Riposo</option><option value="walk">Camminata</option><option value="static">Posa fissa</option></select></label>
+      </div>
+      <div id="v-options" hidden>
+        <label>Espressione <select id="expression"><option value="">Neutra</option></select></label>
+        <p><a href="camerino.html?base=verse">Prova i lanci con VerseEngine</a> (demo pixiv e 16 personaggi CC0 di 100Avatars)</p>
+      </div>
+      <div class="tools">
+        <button id="accessory" aria-pressed="false">Birillo sulla schiena</button>
+        <button id="back">Vista da dietro</button>
+        <button id="front">Vista frontale</button>
+      </div>
+      <p class="small">Il birillo è un accessorio originale della prova. Ciascun modello ha un adattatore per <code>back.center</code>, che lo collega al torso. <a href="modelli/birillo-molkky.glb" download>Scarica il GLB per Blender</a>.</p>
+    </section>
+  </div>
+  <section class="notes">
+    <h2>Modelli e licenze</h2>
+    <p><strong>Quaternius.</strong> I file FBX di Ultimate Modular Men provengono dal download ufficiale del pack, che include un file CC0 1.0. Da quel pacchetto abbiamo estratto anche la clip Idle. La licenza QAL pubblicata nel 2026 si applica agli asset rilasciati con quella licenza. <a href="modelli/Licenza-Quaternius.txt">Licenza inclusa</a> · <a href="https://quaternius.com/packs/ultimatemodularcharacters.html">Pacchetto</a> · <a href="https://quaternius.com/license.html">QAL</a></p>
+    <p><strong>Kenney.</strong> I due modelli GLB vengono dal pack Blocky Characters 2.0, distribuito in CC0 1.0. Il selettore cambia personaggio completo. <a href="modelli/Licenza-Kenney.txt">Licenza inclusa</a> · <a href="https://kenney.nl/assets/blocky-characters">Pacchetto</a></p>
+    <p><strong>VerseEngine.</strong> Il codice di three-avatar è MIT. Il modello demo è © 2022 pixiv Inc., VRM Public License 1.0. I metadati del file consentono uso commerciale, modifica e ridistribuzione e vietano l’uso antisociale o d’odio. <a href="https://github.com/VerseEngine/three-avatar">Runtime</a> · <a href="https://github.com/vrm-c/vrm-specification/tree/master/samples/VRM1_Constraint_Twist_Sample">Modello demo</a> · <a href="https://vrm.dev/licenses/1.0/">Licenza VRM</a></p>
+    <h2>Come fare un modulo nostro</h2>
+    <p>Per un oggetto rigido, si importa il corpo di riferimento in Blender e si esporta solo l’accessorio in GLB, con l’origine sul punto d’aggancio. Il catalogo associa l’asset allo slot, per esempio <code>back.center</code>. Il corpo dichiara l’osso, l’orientamento e la posizione del proprio attacco. Il visualizzatore aggancia l’accessorio all’osso, così lo segue anche quando si muove.</p>
+    <p>Per una maglia o un pezzo che si deforma, si lavora sullo stesso scheletro e sulla stessa posa di riposo del corpo, assegnando i pesi delle ossa alla mesh. Prima di dichiarare compatibile una combinazione, si controllano le intersezioni da davanti, da dietro e in movimento.</p>
+  </section>
+</main>
+<script type="module">
+  import('./laboratorio.js').catch(error => {
+    document.querySelector('#status').textContent = 'Avvio fallito. Apri la pagina tramite il server locale e verifica la connessione per caricare Three.js.';
+    console.error(error);
+  });
+</script>
+</body>
+</html>

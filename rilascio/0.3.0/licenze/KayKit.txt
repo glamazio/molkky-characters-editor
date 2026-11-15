@@ -1,0 +1,21 @@
+KayKit, personaggi formato 2.0 e Character Animations 1.1 (modelli/kaykit2/)
+Fonte: github.com/GeorgeQLe/assets-kaykit-3d-characters (ripubblica «The Complete KayKit Collection v6» di Kay Lousberg).
+Pacchetti: Adventurers 2.0, Skeletons 1.1, Character Animations 1.1, Mystery Monthly Series 4, 5, 6. Su itch.io in parte a pagamento:
+la licenza originale qui sotto è comunque CC0. Se finiscono nell'app, conviene acquistare la collezione per sostenere l'autore.
+
+	
+
+	The Complete KayKit Collection v6
+
+	Created/distributed by Kay Lousberg (www.kaylousberg.com)
+	Creation date: 01/07/2026 09:00
+
+			------------------------------
+
+	License: (Creative Commons Zero, CC0)
+	http://creativecommons.org/publicdomain/zero/1.0/
+
+	This content is free to use in personal, educational and commercial projects.
+	You can support me by purchasing an asset pack at the EXTRA or SOURCE tiers, leaving a donation/tip on itch.io, or joining my Patreon.
+	If you wish to credit me you can do so by crediting "Kay Lousberg, www.kaylousberg.com" (this is not mandatory)
+

@@ -1,0 +1,15 @@
+{
+  "name": "mollky-avatar-laboratorio",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Laboratorio avatar 3D di Mölkky: esperimenti e pacchetto per l'app",
+  "type": "module",
+  "scripts": {
+    "esporta": "node pacchetto/esporta.mjs"
+  },
+  "devDependencies": {
+    "@gltf-transform/core": "4.4.2",
+    "@gltf-transform/functions": "4.4.2",
+    "three": "0.153.0"
+  }
+}
