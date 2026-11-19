@@ -18,3 +18,8 @@ Nuova `scena(el, giocatori, opz)`: più personaggi nella stessa tela (un solo co
 
 ## 0.5.0 (15 novembre 2026)
 Nuovo gesto `disperato` per i compagni di squadra nei momenti negativi (zero, sballo, sconfitta): sussulto (Hit_A) e poi testa china (Skeletons_Inactive_Standing_Pose) finché la scena resta aperta; scheletro grande: Melee_Block_Hit. Le pose ferme (clip di durata zero) si tengono invece di ripetersi.
+
+## 0.6.0 (19 novembre 2026)
+Nuovo gesto `delusione`: la clip «Defeat» di Quaternius (Ultimate Animated Character Pack, CC0) riadattata sullo scheletro medio KayKit con `strumenti/riadatta.html`, partendo da Idle_A (2,5 s: si piega, mano alla testa, si rialza). Scheletro grande: per ora Hit_A.
+`esporta.mjs` legge anche le librerie di `pacchetto/clip/` (fonti in `clip/FONTI.md`) e ritrova le ossa coi nomi scritti da three (senza punti). Licenza Quaternius nel rilascio.
+

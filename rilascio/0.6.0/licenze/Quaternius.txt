@@ -1,0 +1,20 @@
+Tre pacchetti di Quaternius (quaternius.com), scaricati dall'utente da Google Drive il 15 novembre 2026.
+Ogni archivio contiene un License.txt: CC0 1.0 Universal, https://creativecommons.org/publicdomain/zero/1.0/
+
+- Ultimate Animated Character Pack (Nov 2019) -> modelli/quaternius-animati/ (36 dei 49 personaggi glTF, convertiti in GLB)
+- RPG Characters (Nov 2020) -> modelli/quaternius-rpg/ (6 classi, convertite in GLB, texture incluse)
+- Ultimate Monsters -> modelli/quaternius-mostri/ (Big, Blob, Flying: 50 mostri convertiti in GLB, atlante incluso)
+
+Testo della licenza (uguale nei tre archivi, salvo l'intestazione):
+------------------------------------------------------
+LowPoly Models by @Quaternius
+Consider supporting me on Patreon, even $1 helps me a lot!
+
+https://www.patreon.com/quaternius
+-------------------------------------------------------
+
+License:
+CC0 1.0 Universal (CC0 1.0) 
+Public Domain Dedication
+https://creativecommons.org/publicdomain/zero/1.0/
+

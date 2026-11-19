@@ -4,7 +4,7 @@ Il laboratorio (`G:\Develop\Mollky\avatar engine`, repository git a parte) speri
 
 ## Interfaccia (`avatar3d.js`, modulo ES)
 - `monta(elemento, { colore, etichetta })` → Promise di un avatar. `colore` è il colore del giocatore nell'app.
-- `avatar.gesto(nome)` → Promise risolta a fine gesto. Nomi in `manifesto.json` → `gesti` (oggi `esulta`, `morte`).
+- `avatar.gesto(nome)` → Promise risolta a fine gesto. Nomi in `manifesto.json` → `gesti` (dalla 0.6.0: `bel_tiro`, `salvataggio`, `vittoria`, `zero`, `sforo`, `sconfitta`, `disperato`, `delusione`, `lancio`).
 - `avatar.attacca(elemento)`: sposta la tela in un nuovo contenitore (l'app ridisegna il DOM a ogni `render()`).
 - `avatar.smonta()`: ferma tutto e libera la memoria.
 - `personaggi()` → `{ predefinito, personaggi: [{ id, nome }] }`; `monta(el, { personaggio })`; `avatar.cambia(id)` (Promise); `avatar.personaggio` (id attuale). Trascinando la tela in orizzontale il personaggio ruota.

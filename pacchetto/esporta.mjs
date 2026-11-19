@@ -34,8 +34,11 @@ async function clipDi(rig, sk) {
   const volute = new Set([sk.riposo, ...Object.values(sk.gesti).flatMap(g => [...g.clip, ...(g.poi && g.poi !== 'fermo' && g.poi !== 'riposo' ? [g.poi] : [])])]);
   const pref = rig === 'large' ? 'Rig_Large_' : 'Rig_Medium_';
   let clip = null;
-  for (const f of fs.readdirSync(path.join(kk, 'animazioni')).filter(f => f.startsWith(pref))) {
-    const doc = await io.read(path.join(kk, 'animazioni', f));
+  // Librerie KayKit, poi le nostre (pacchetto/clip: clip riadattate da altri pacchetti, vedi clip/FONTI.md).
+  const librerie = [path.join(kk, 'animazioni'), path.join(qui, 'clip')]
+    .flatMap(d => fs.existsSync(d) ? fs.readdirSync(d).filter(f => f.startsWith(pref) && f.endsWith('.glb')).map(f => path.join(d, f)) : []);
+  for (const f of librerie) {
+    const doc = await io.read(f);
     const root = doc.getRoot();
     // Canali e campionatori vanno tolti a mano: dispose() dell'animazione non li stacca, e i loro dati resterebbero nel file.
     // Gli accessori dei dati li toglie prune, solo se nessuna clip tenuta li usa. A parità di nome vince la prima libreria.
@@ -50,8 +53,11 @@ async function clipDi(rig, sk) {
     // (con due scheletri il caricatore rinomina i doppioni «osso_1» e quelle clip non muovono più niente).
     mergeDocuments(clip, doc);
     const [primo, ...altri] = clip.getRoot().listScenes();
+    // Le clip riadattate nel browser hanno i nomi come li scrive three («upperarm.l» -> «upperarml»): si cercano anche così.
+    const pulito = n => n.replace(/\s/g, '_').replace(/[\[\].:\/]/g, '');
     const ossa = new Map();
     primo.traverse(n => { if (!ossa.has(n.getName())) ossa.set(n.getName(), n); });
+    primo.traverse(n => { if (!ossa.has(pulito(n.getName()))) ossa.set(pulito(n.getName()), n); });
     const nelPrimo = new Set(ossa.values());
     for (const a of clip.getRoot().listAnimations()) for (const c of a.listChannels()) {
       const n = c.getTargetNode();
@@ -111,6 +117,8 @@ if (!personaggi.some(p => p.id === cfg.predefinito)) throw new Error('il predefi
 // ---- licenze e changelog ----
 fs.copyFileSync(path.join(kk, '..', 'Licenza-KayKit2.txt'), path.join(out, 'licenze', 'KayKit.txt'));
 fs.copyFileSync(path.join(three, 'LICENSE'), path.join(out, 'licenze', 'three.js.txt'));
+// Clip riadattate da Quaternius (pacchetto/clip/FONTI.md)
+if (fs.existsSync(path.join(qui, 'clip'))) fs.copyFileSync(path.join(kk, '..', 'Licenza-Quaternius-pacchetti.txt'), path.join(out, 'licenze', 'Quaternius.txt'));
 fs.copyFileSync(path.join(qui, 'CHANGELOG.md'), path.join(out, 'CHANGELOG.md'));
 
 // ---- manifesto: nomi per il modulo e SHA-256 di ogni file per l'importazione ----
@@ -127,7 +135,7 @@ const manifesto = {
   predefinito: cfg.predefinito, personaggi,
   gesti: cfg.gesti,
   scheletri: Object.fromEntries(Object.entries(cfg.scheletri).map(([rig, sk]) => [rig, { ...sk, clip: `modelli/clip-${rig}.glb` }])),
-  licenze: { 'KayKit (Kay Lousberg)': 'CC0 1.0, licenze/KayKit.txt', 'three.js 0.153.0': 'MIT, licenze/three.js.txt' },
+  licenze: { 'KayKit (Kay Lousberg)': 'CC0 1.0, licenze/KayKit.txt', 'Quaternius (clip «Delusione», riadattata)': 'CC0 1.0, licenze/Quaternius.txt', 'three.js 0.153.0': 'MIT, licenze/three.js.txt' },
   file,
 };
 fs.writeFileSync(path.join(out, 'manifesto.json'), JSON.stringify(manifesto, null, 1) + '\n');

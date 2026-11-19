@@ -1,6 +1,6 @@
 {
-  "versione": "0.5.0",
-  "nota": "Prova: gesto «disperato» per i compagni nei momenti negativi.",
+  "versione": "0.6.0",
+  "nota": "Prova: gesto «delusione» (Defeat di Quaternius riadattata sullo scheletro medio).",
   "personaggi": "tutti",
   "escludi": [],
   "predefinito": "Knight",
@@ -23,7 +23,8 @@
     "sforo": "Sballo",
     "sconfitta": "Sconfitta",
     "lancio": "Lancio",
-    "disperato": "Disperato"
+    "disperato": "Disperato",
+    "delusione": "Delusione"
   },
   "scheletri": {
     "medium": {
@@ -72,6 +73,11 @@
             "Hit_A"
           ],
           "poi": "Skeletons_Inactive_Standing_Pose"
+        },
+        "delusione": {
+          "clip": [
+            "Delusione"
+          ]
         }
       }
     },
@@ -120,6 +126,11 @@
         "disperato": {
           "clip": [
             "Melee_Block_Hit"
+          ]
+        },
+        "delusione": {
+          "clip": [
+            "Hit_A"
           ]
         }
       }

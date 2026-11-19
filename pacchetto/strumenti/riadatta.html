@@ -1,0 +1,118 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Riadatta una clip</title>
+<!-- Strumento del laboratorio: copia una clip da uno scheletro a un altro (per esempio «Defeat» di Quaternius su KayKit).
+     Si apre servendo la cartella del laboratorio (python -m http.server) e si usa da script: window.riadatta({...}).
+     Metodo: per ogni osso, la rotazione rispetto alla posa di riposo (nello spazio del mondo) si applica all'osso gemello;
+     così non conta come sono orientati gli assi delle ossa nei due pacchetti. I fianchi si spostano in proporzione all'altezza. -->
+<script type="importmap">{ "imports": { "three": "/node_modules/three/build/three.module.js", "three/addons/": "/node_modules/three/examples/jsm/" } }</script>
+<body style="margin:0;background:#2b2a5e">
+<canvas id="c" width="900" height="260"></canvas>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
+
+const loader = new GLTFLoader();
+const ossa = root => { const m = new Map(); root.traverse(o => { if (o.isBone) m.set(o.name, o); }); return m; };
+const wq = o => o.getWorldQuaternion(new THREE.Quaternion());
+const wp = o => o.getWorldPosition(new THREE.Vector3());
+// Posa di legatura (bind pose): quella in cui la pelle è stata attaccata alle ossa. È il riferimento giusto per tutti e due
+// gli scheletri: la posa «del file» può essere un'altra (Quaternius la salva con le braccia giù, KayKit a T).
+// In three: mondo dell'osso al momento della legatura = bindMatrix · inversa(boneInverse).
+function legatura(root) {
+  const m = new Map();
+  root.traverse(o => {
+    if (!o.isSkinnedMesh) return;
+    o.skeleton.bones.forEach((b, i) => {
+      if (m.has(b.name)) return;
+      const w = o.bindMatrix.clone().multiply(o.skeleton.boneInverses[i].clone().invert());
+      const p = new THREE.Vector3(), q = new THREE.Quaternion(), sc = new THREE.Vector3(); w.decompose(p, q, sc);
+      m.set(b.name, { q, p });
+    });
+  });
+  return m;
+}
+
+// mappa: osso del bersaglio -> osso della sorgente (nomi come li vede three: senza punti).
+// tposa (facoltativa): { file, clip } con la posa a T del bersaglio (KayKit: «T-Pose» nella libreria General dello scheletro).
+// partenza (facoltativa, preferita): { file, clip } con la posa da cui parte il bersaglio (KayKit: «Idle_A»). Allora il riferimento
+// è «primo fotogramma della clip sorgente ↔ quella posa»: la clip nuova comincia esattamente dal riposo del personaggio.
+window.riadatta = async ({ sorgente, clipNome, bersaglio, nome, mappa, fianchiB, fianchiS, tposa, partenza, fps = 30 }) => {
+  const S = await loader.loadAsync(sorgente), T = await loader.loadAsync(bersaglio);
+  const clip = S.animations.find(a => a.name === clipNome);
+  if (!clip) throw new Error('clip non trovata: ' + clipNome);
+  S.scene.updateMatrixWorld(true); T.scene.updateMatrixWorld(true);
+  const bs = ossa(S.scene), bt = ossa(T.scene);
+  for (const [t, s] of Object.entries(mappa)) { if (!bt.has(t)) throw new Error('bersaglio senza ' + t); if (!bs.has(s)) throw new Error('sorgente senza ' + s); }
+  // riferimento: la posa di legatura di ciascuno scheletro (a T); il bersaglio parte da lì anche per le ossa non mappate
+  // Bersaglio: se c'è la sua clip di posa a T, quella è il riferimento (la legatura dei KayKit grandi non è a T).
+  const posaB = partenza || tposa;
+  const qui = bones => new Map([...bones].map(([n, b]) => [n, { q: wq(b), p: wp(b) }]));
+  // La posa si legge PRIMA di fermare il mixer: fermandolo, three rimette le ossa com'erano.
+  let LTposa = null, tLocPosa = null;
+  if (posaB) {
+    const lib = await loader.loadAsync(posaB.file), tc = lib.animations.find(a => a.name === posaB.clip);
+    if (!tc) throw new Error('posa del bersaglio non trovata: ' + posaB.clip);
+    const m = new THREE.AnimationMixer(T.scene); m.clipAction(tc).play(); m.setTime(0); T.scene.updateMatrixWorld(true);
+    LTposa = qui(bt); tLocPosa = new Map([...bt].map(([n, b]) => [n, b.quaternion.clone()]));
+    m.stopAllAction();
+  }
+  let LS = legatura(S.scene);
+  if (partenza) {   // sorgente: il suo primo fotogramma
+    const m0 = new THREE.AnimationMixer(S.scene); m0.clipAction(clip).play(); m0.setTime(0); S.scene.updateMatrixWorld(true); LS = qui(bs); m0.stopAllAction();
+  }
+  const LT = posaB ? LTposa : legatura(T.scene);
+  const sRest = new Map([...LS].map(([n, v]) => [n, v.q])), tRest = new Map([...LT].map(([n, v]) => [n, v.q]));
+  const tLocRest = tLocPosa || new Map([...bt].map(([n, b]) => [n, b.quaternion.clone()]));
+  const hS = LS.get(fianchiS).p.clone(), hT = LT.get(fianchiB).p.clone(), k = hT.y / hS.y;
+  // ordine dall'alto in basso: i genitori prima dei figli
+  const ordine = []; T.scene.traverse(o => { if (o.isBone) ordine.push(o); });
+  const mixer = new THREE.AnimationMixer(S.scene); mixer.clipAction(clip).play();
+  const n = Math.round(clip.duration * fps) + 1, tempi = [], val = new Map(ordine.map(b => [b.name, []])), pos = [];
+  for (let i = 0; i < n; i++) {
+    const t = Math.min(i / fps, clip.duration); tempi.push(t);
+    mixer.setTime(t); S.scene.updateMatrixWorld(true);
+    for (const b of ordine) {
+      const s = mappa[b.name];
+      if (s) {
+        const delta = wq(bs.get(s)).multiply(sRest.get(s).clone().invert());          // rotazione dalla posa di riposo, nel mondo
+        const voluta = delta.multiply(tRest.get(b.name));
+        b.quaternion.copy(wq(b.parent).invert().multiply(voluta));
+      } else b.quaternion.copy(tLocRest.get(b.name));
+      b.updateMatrixWorld(true);
+      val.get(b.name).push(...b.quaternion.toArray());
+    }
+    // fianchi: lo spostamento della sorgente, in proporzione all'altezza
+    const d = wp(bs.get(fianchiS)).sub(hS).multiplyScalar(k), fb = bt.get(fianchiB);
+    const dove = fb.parent.worldToLocal(hT.clone().add(d)); pos.push(...dove.toArray());
+    fb.position.copy(dove); fb.updateMatrixWorld(true);
+  }
+  const tracce = ordine.filter(b => mappa[b.name]).map(b => new THREE.QuaternionKeyframeTrack(b.name + '.quaternion', tempi, val.get(b.name)));
+  tracce.push(new THREE.VectorKeyframeTrack(fianchiB + '.position', tempi, pos));
+  const out = new THREE.AnimationClip(nome, clip.duration, tracce);
+  // anteprima: quattro pose del bersaglio con la clip nuova
+  window.anteprima(T, out);
+  // file: solo lo scheletro del bersaglio (niente mesh) con la clip
+  const sk = T.scene.clone(true); const via = []; sk.traverse(o => { if (o.isMesh) via.push(o); }); via.forEach(o => o.parent.remove(o));
+  const glb = await new GLTFExporter().parseAsync(sk, { binary: true, animations: [out] });
+  let s = ''; const u = new Uint8Array(glb); for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000));
+  return { durata: clip.duration, fotogrammi: n, glb: btoa(s) };
+};
+
+window.anteprima = (T, clip) => {
+  const r = new THREE.WebGLRenderer({ canvas: document.getElementById('c'), antialias: true, preserveDrawingBuffer: true }); r.outputColorSpace = THREE.SRGBColorSpace;
+  const sc = new THREE.Scene(); sc.background = new THREE.Color('#3b3a6e'); sc.add(new THREE.HemisphereLight(0xffffff, 0x8a8f99, 2.2));
+  const dl = new THREE.DirectionalLight(0xffffff, 1.6); dl.position.set(2, 4, 3); sc.add(dl);
+  const mixer = new THREE.AnimationMixer(T.scene); const a = mixer.clipAction(clip); a.play();
+  sc.add(T.scene); T.scene.rotation.y = 0.6;
+  const box = new THREE.Box3().setFromObject(T.scene), h = box.max.y - box.min.y || 2;
+  const cam = new THREE.PerspectiveCamera(30, 225 / 260, 0.1, 100); cam.position.set(0, h * 0.55, h * 3.2); cam.lookAt(0, h * 0.45, 0);
+  r.setScissorTest(true);
+  [0.1, 0.4, 0.7, 1].forEach((f, i) => {
+    mixer.setTime(clip.duration * f * 0.999);
+    r.setViewport(i * 225, 0, 225, 260); r.setScissor(i * 225, 0, 225, 260); r.render(sc, cam);
+  });
+};
+document.title = 'pronto';
+</script>
