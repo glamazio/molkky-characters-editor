@@ -30,7 +30,9 @@ Qui si sperimenta l'avatar 3D; in produzione oggi c'è solo la caricatura 2D del
 - **Preferenza dell'utente: VerseEngine** (detta il 15 novembre 2026), Quaternius come seconda scelta.
 - **Altre bozze dell'8 novembre** in `bozze-8-novembre/` (spostate qui dal repository Mölkky il 15 novembre): `avatar-basi-open-source.html` (Open Peeps e DiceBear, 2D), `avatar-moduli-bozza.html` (schema a porte e manifesto dei moduli), `avatar-3d-moduli.html` (omino 3D a socket con Three.js da CDN; si apre come file).
 
-**Fonti dei modelli KayKit:** `FONTI.md` (repository, commit e percorso d'origine di ogni file, verificati byte per byte il 19 novembre 2026). I modelli scaricati non sono in git: si riscaricano da lì.
+**Fonti dei modelli:** `FONTI.md` (KayKit: repository, commit e percorso d'origine di ogni file, verificati byte per byte il 19 novembre 2026; animazioni Quaternius da riadattare: Universal Animation Library 1 e 2 Standard in `modelli/quaternius-ual/`, Robot in `modelli/quaternius-robot/`, con SHA-256). I modelli scaricati non sono in git: si riscaricano da lì.
+
+**Strumenti** (`npm run strumenti`, guida in `pacchetto/strumenti/LEGGIMI.md`): `riadatta.html` porta una clip di un altro pacchetto (Quaternius, KayKit 1.0) sugli scheletri KayKit 2.0; ossa abbinate dai nomi, riferimento Idle↔Idle_A o posa a T↔T-Pose; i file vanno in `pacchetto/clip/` (fonti in `pacchetto/clip/FONTI.md`) e `esporta.mjs` li unisce alle clip KayKit.
 
 ## Pacchetto per l'app (dal 15 novembre 2026)
 

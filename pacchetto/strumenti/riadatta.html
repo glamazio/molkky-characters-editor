@@ -22,6 +22,9 @@
   button.pri { background: var(--acc); color: #222; border-color: var(--acc); font-weight: 600; }
   button:disabled { opacity: .5; cursor: default; }
   #stato { color: var(--deb); }
+  details.aiuto { background: var(--pan); border-radius: 10px; padding: 10px 14px; margin: 0 0 12px; color: var(--deb); font-size: 14px; }
+  details.aiuto summary { cursor: pointer; color: var(--tx); font-weight: 600; }
+  details.aiuto a { color: var(--acc); }
   #stato.err { color: #ff8f8f; }
   .viste { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 14px; align-items: flex-start; }
   canvas { background: var(--pan); border-radius: 10px; max-width: 100%; }
@@ -33,12 +36,23 @@
 <body>
 <main>
   <h1>Riadatta una clip</h1>
-  <p class="sub">Prende un'animazione da un altro pacchetto (Quaternius, KayKit 1.0) e la mette su uno scheletro KayKit 2.0, partendo dalla posa di riposo. Le ossa si abbinano da sole dai nomi. La clip vale per tutti i personaggi dello stesso scheletro (medio o grande). Il file scaricato va in <code>pacchetto/clip/</code>, con la riga in <code>clip/FONTI.md</code>; poi la clip si usa in <code>pacchetto.json</code> col suo nome.</p>
+  <p class="sub">Prende un'animazione da un altro pacchetto (Quaternius: Universal Animation Library, Robot, animati, donna, RPG, mostri; KayKit 1.0) e la mette su uno scheletro KayKit 2.0. Le ossa si abbinano da sole dai nomi. La clip vale per tutti i personaggi dello stesso scheletro (medio o grande). Il file scaricato va in <code>pacchetto/clip/</code>, con la riga in <code>clip/FONTI.md</code>; poi la clip si usa in <code>pacchetto.json</code> col suo nome.</p>
+  <details class="aiuto">
+    <summary>Come si usa</summary>
+    <ol>
+      <li><b>Personaggio sorgente</b> e <b>clip</b>: quello che si vuole copiare. A sinistra, sotto, l'originale si muove nel suo pacchetto.</li>
+      <li><b>Personaggio KayKit</b>: su chi provarla. Conta lo scheletro (medio o grande): la clip varrà per tutti quelli dello stesso scheletro.</li>
+      <li><b>Riposo della sorgente</b> e <b>posa di partenza KayKit</b>: le due pose considerate uguali; si scelgono da sole (Idle con Idle_A, oppure posa a T con T-Pose). Con «primo fotogramma» la clip parte dal riposo del personaggio, ma una clip che comincia già seduta o a braccia conserte perde quella posa.</li>
+      <li><b>Riadatta</b>, guarda il risultato (si gira trascinando), poi <b>Scarica il file</b> e copia la riga per <code>FONTI.md</code> che compare sopra i pulsanti.</li>
+    </ol>
+    <p>Si muovono busto, testa, braccia e gambe, non le dita; niente oggetti (chi si siede, si siede nel vuoto). Guida completa, fonti e limiti: <a href="LEGGIMI.md" target="_blank">LEGGIMI.md</a>; pacchetti e licenze: <a href="/FONTI.md" target="_blank">FONTI.md</a>.</p>
+  </details>
   <form id="f">
     <label>Personaggio sorgente<select id="sorg"></select></label>
     <label>Clip della sorgente<select id="clip"><option>Defeat</option></select></label>
     <label>Personaggio KayKit<select id="pers"></select></label>
-    <label>Posa di partenza<select id="part"><option>Idle_A</option><option value="">(posa di legatura)</option></select></label>
+    <label>Riposo della sorgente<select id="riposo"></select></label>
+    <label>Posa di partenza KayKit<select id="part"><option>Idle_A</option><option>T-Pose</option><option value="">(posa di legatura)</option></select></label>
     <label>Nome della clip nuova<input id="nome" value="Delusione" pattern="[A-Za-z0-9_]+"></label>
     <p id="ossa"></p>
     <div class="azioni">
@@ -65,15 +79,16 @@ const wp = o => o.getWorldPosition(new THREE.Vector3());
 const K2 = '/confronto-avatar-3d/modelli/kaykit2/';
 
 // Abbinamento automatico delle ossa: per ogni osso KayKit (nomi come li vede three: senza punti) i nomi possibili nella sorgente,
-// in ordine di preferenza, senza maiuscole. Vale per Quaternius (Hips, Abdomen, Torso/Chest, UpperArm.L, Fist.L o Wrist.L…)
+// in ordine di preferenza, senza maiuscole né «_», «.» e spazi. Vale per Quaternius (Hips, Abdomen, Torso/Chest, UpperArm.L, Fist.L o Wrist.L…),
+// per la Universal Animation Library (nomi stile Unreal: pelvis, spine_01…03, upperarm_l, hand_l, thigh_l, calf_l)
 // e per KayKit 1.0 (stessi nomi di KayKit 2.0). Il petto prende l'osso più in alto del busto: col metodo «nel mondo» conta solo dove sta.
-const CANDIDATI = { hips: ['hips', 'pelvis'], spine: ['abdomen', 'spine'], chest: ['chest', 'torso', 'spine2', 'spine1'], head: ['head'] };
+const CANDIDATI = { hips: ['hips', 'pelvis'], spine: ['abdomen', 'spine', 'spine01'], chest: ['chest', 'torso', 'spine03', 'spine2', 'spine02', 'spine1'], head: ['head'] };
 for (const s of ['l', 'r']) Object.assign(CANDIDATI, {
   ['upperarm' + s]: ['upperarm' + s], ['lowerarm' + s]: ['lowerarm' + s, 'forearm' + s], ['wrist' + s]: ['wrist' + s, 'fist' + s, 'hand' + s],
   ['upperleg' + s]: ['upperleg' + s, 'thigh' + s], ['lowerleg' + s]: ['lowerleg' + s, 'shin' + s, 'calf' + s], ['foot' + s]: ['foot' + s] });
 const NECESSARIE = ['hips', 'head', 'upperarml', 'upperarmr', 'lowerarml', 'lowerarmr', 'upperlegl', 'upperlegr', 'lowerlegl', 'lowerlegr'];
 function mappaAuto(bs, bt) {
-  const basse = new Map([...bs.keys()].map(n => [n.toLowerCase(), n]));
+  const basse = new Map([...bs.keys()].map(n => [n.toLowerCase().replace(/[_.\s]/g, ''), n]));
   const m = {};
   for (const [t, c] of Object.entries(CANDIDATI)) if (bt.has(t)) { const s = c.map(x => basse.get(x)).find(Boolean); if (s) m[t] = s; }
   const mancano = NECESSARIE.filter(t => !m[t]);
@@ -99,9 +114,11 @@ function legatura(root) {
 
 // mappa: osso del bersaglio -> osso della sorgente (nomi come li vede three: senza punti).
 // partenza (facoltativa, preferita): { file, clip } con la posa da cui parte il bersaglio (KayKit: «Idle_A»). Allora il riferimento
-// è «primo fotogramma della clip sorgente ↔ quella posa»: la clip nuova comincia esattamente dal riposo del personaggio.
+// è «riposo della sorgente ↔ quella posa». riposoS (facoltativo): nome di una clip della sorgente il cui primo fotogramma è il suo
+// riposo (per esempio «Idle»); senza, il riposo è il primo fotogramma della clip stessa, e la clip nuova comincia esattamente
+// dal riposo del personaggio. Con riposoS anche le clip che partono già da una posa (seduto, braccia conserte) la conservano.
 // tposa (facoltativa): { file, clip } con una posa a T del bersaglio. Senza nessuna delle due: posa di legatura.
-window.riadatta = async ({ sorgente, clipNome, bersaglio, nome, mappa, fianchiB = 'hips', fianchiS, tposa, partenza, fonte, fps = 30 }) => {
+window.riadatta = async ({ sorgente, clipNome, bersaglio, nome, mappa, fianchiB = 'hips', fianchiS, tposa, partenza, riposoS, fonte, fps = 30 }) => {
   const S = await loader.loadAsync(sorgente), T = await loader.loadAsync(bersaglio);
   const clip = S.animations.find(a => a.name === clipNome);
   if (!clip) throw new Error('clip non trovata: ' + clipNome);
@@ -121,8 +138,10 @@ window.riadatta = async ({ sorgente, clipNome, bersaglio, nome, mappa, fianchiB 
     m.stopAllAction();
   }
   let LS = legatura(S.scene);
-  if (partenza) {   // sorgente: il suo primo fotogramma
-    const m0 = new THREE.AnimationMixer(S.scene); m0.clipAction(clip).play(); m0.setTime(0); S.scene.updateMatrixWorld(true); LS = qui(bs); m0.stopAllAction();
+  if (partenza) {   // sorgente: il primo fotogramma della sua clip di riposo, o della clip stessa
+    const rc = riposoS ? S.animations.find(a => a.name === riposoS) : clip;
+    if (!rc) throw new Error('clip di riposo della sorgente non trovata: ' + riposoS);
+    const m0 = new THREE.AnimationMixer(S.scene); m0.clipAction(rc).play(); m0.setTime(0); S.scene.updateMatrixWorld(true); LS = qui(bs); m0.stopAllAction();
   }
   const LT = posaB ? LTposa : legatura(T.scene);
   const sRest = new Map([...LS].map(([n, v]) => [n, v.q])), tRest = new Map([...LT].map(([n, v]) => [n, v.q]));
@@ -219,6 +238,15 @@ async function clipDellaSorgente() {
     sorgente = { file, g };
     sel.innerHTML = g.animations.map(a => `<option value="${esc(a.name)}">${esc(nomeClip(a.name))}</option>`).join('');
     if ([...sel.options].some(o => o.value === prima)) sel.value = prima;
+    // Riferimento: la «Idle» neutra della sorgente (Idle, Idle_Loop) con Idle_A di KayKit; se non c'è ma c'è una posa a T
+    // (UAL: A_TPose), posa a T con la T-Pose di KayKit; altrimenti il primo fotogramma della clip con Idle_A.
+    // Non si prende un'Idle qualsiasi: «Idle_FoldArms» come riposo annullerebbe proprio le braccia conserte.
+    const idle = g.animations.find(a => /^idle(_loop)?$/i.test(nomeClip(a.name)));
+    const tpose = g.animations.find(a => /t-?pose$/i.test(nomeClip(a.name)));
+    $('riposo').innerHTML = '<option value="">(primo fotogramma della clip)</option>' +
+      g.animations.map(a => `<option value="${esc(a.name)}">${esc(nomeClip(a.name))}</option>`).join('');
+    $('riposo').value = (idle || tpose)?.name || '';
+    accoppiaPartenza();
     stato(`${pacchettoDi(file)?.nome || 'Sorgente'}: ${g.animations.length} clip.`);
     mostraOriginale();
   } catch (e) { stato('Sorgente non trovata: ' + e.message, true); }
@@ -231,6 +259,9 @@ function mostraOriginale() {
 
 $('sorg').addEventListener('change', clipDellaSorgente);
 $('clip').addEventListener('change', mostraOriginale);
+// Le due pose di riferimento devono essere la stessa posa: riposo con riposo, posa a T con posa a T.
+function accoppiaPartenza() { $('part').value = /t-?pose$/i.test(nomeClip($('riposo').value)) ? 'T-Pose' : 'Idle_A'; }
+$('riposo').addEventListener('change', accoppiaPartenza);
 $('f').addEventListener('submit', async e => {
   e.preventDefault();
   const nome = $('nome').value.trim();
@@ -244,12 +275,13 @@ $('f').addEventListener('submit', async e => {
     const r = await window.riadatta({
       sorgente: file, clipNome, bersaglio: K2 + 'personaggi/' + p.id + '.glb', nome, fonte,
       partenza: $('part').value ? { file: K2 + 'animazioni/Rig_' + Rig + '_General.glb', clip: $('part').value } : undefined,
+      riposoS: $('riposo').value || undefined,
     });
     ultimo = { r, file: `Rig_${Rig}_${nome}.glb` };
     $('scarica').disabled = false;
     stato(`Fatto: ${r.durata.toFixed(2)} s, ${r.fotogrammi} fotogrammi, scheletro ${p.rig === 'large' ? 'grande' : 'medio'}. Il file va in pacchetto/clip/ come ${ultimo.file}.`);
     $('ossa').textContent = 'Ossa abbinate: ' + Object.entries(r.mappa).map(([t, s]) => `${t} ← ${s}`).join(', ') +
-      `.  Riga per FONTI.md: | \`${ultimo.file}\` | \`${nome}\` (${r.durata.toFixed(1).replace('.', ',')} s) | ${fonte} | prova su ${p.id}, partenza ${$('part').value || 'legatura'} |`;
+      `.  Riga per FONTI.md: | \`${ultimo.file}\` | \`${nome}\` (${r.durata.toFixed(1).replace('.', ',')} s) | ${fonte} | prova su ${p.id}, partenza ${$('part').value || 'legatura'}, riposo sorgente ${$('riposo').value ? nomeClip($('riposo').value) : 'primo fotogramma'} |`;
   } catch (err) { stato('Errore: ' + err.message, true); }
   $('vai').disabled = false;
 });

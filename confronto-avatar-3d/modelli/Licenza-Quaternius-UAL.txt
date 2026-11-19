@@ -1,0 +1,12 @@
+Universal Animation Library 1 e 2 di Quaternius (quaternius.com), versione Standard (gratuita).
+Scaricate da Claude per l'utente il 19 novembre 2026 da itch.io (download gratuito, «No thanks, just take me to the downloads»):
+- https://quaternius.itch.io/universal-animation-library    -> Universal Animation Library[Standard].zip
+- https://quaternius.itch.io/universal-animation-library-2  -> Universal Animation Library 2[Standard].zip
+Pagine del pacchetto: https://quaternius.com/packs/universalanimationlibrary.html e .../universalanimationlibrary2.html
+Anteprima di tutte le clip: https://quaternius.com/animviewer.html
+
+Il License.txt di entrambi gli zip:
+CC0 1.0 Universal (CC0 1.0)
+Public Domain Dedication
+https://creativecommons.org/publicdomain/zero/1.0/
+Models by @Quaternius (Patreon: https://www.patreon.com/quaternius)

@@ -118,7 +118,10 @@ if (!personaggi.some(p => p.id === cfg.predefinito)) throw new Error('il predefi
 fs.copyFileSync(path.join(kk, '..', 'Licenza-KayKit2.txt'), path.join(out, 'licenze', 'KayKit.txt'));
 fs.copyFileSync(path.join(three, 'LICENSE'), path.join(out, 'licenze', 'three.js.txt'));
 // Clip riadattate da Quaternius (pacchetto/clip/FONTI.md)
-if (fs.existsSync(path.join(qui, 'clip'))) fs.copyFileSync(path.join(kk, '..', 'Licenza-Quaternius-pacchetti.txt'), path.join(out, 'licenze', 'Quaternius.txt'));
+// (una sola nota con tutte quelle Quaternius del laboratorio: pacchetti, Universal Animation Library, Robot)
+if (fs.existsSync(path.join(qui, 'clip'))) fs.writeFileSync(path.join(out, 'licenze', 'Quaternius.txt'),
+  ['Licenza-Quaternius-pacchetti.txt', 'Licenza-Quaternius-UAL.txt', 'Licenza-Quaternius-Robot.txt']
+    .map(f => path.join(kk, '..', f)).filter(f => fs.existsSync(f)).map(f => fs.readFileSync(f, 'utf8').trim()).join('\n\n----------\n\n') + '\n');
 fs.copyFileSync(path.join(qui, 'CHANGELOG.md'), path.join(out, 'CHANGELOG.md'));
 
 // ---- manifesto: nomi per il modulo e SHA-256 di ogni file per l'importazione ----
@@ -135,7 +138,7 @@ const manifesto = {
   predefinito: cfg.predefinito, personaggi,
   gesti: cfg.gesti,
   scheletri: Object.fromEntries(Object.entries(cfg.scheletri).map(([rig, sk]) => [rig, { ...sk, clip: `modelli/clip-${rig}.glb` }])),
-  licenze: { 'KayKit (Kay Lousberg)': 'CC0 1.0, licenze/KayKit.txt', 'Quaternius (clip «Delusione», riadattata)': 'CC0 1.0, licenze/Quaternius.txt', 'three.js 0.153.0': 'MIT, licenze/three.js.txt' },
+  licenze: { 'KayKit (Kay Lousberg)': 'CC0 1.0, licenze/KayKit.txt', 'Quaternius (clip riadattate, fonti in pacchetto/clip/FONTI.md)': 'CC0 1.0, licenze/Quaternius.txt', 'three.js 0.153.0': 'MIT, licenze/three.js.txt' },
   file,
 };
 fs.writeFileSync(path.join(out, 'manifesto.json'), JSON.stringify(manifesto, null, 1) + '\n');

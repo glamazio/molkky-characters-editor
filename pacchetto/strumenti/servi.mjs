@@ -13,6 +13,8 @@ const TIPI = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.
 // Pacchetti con scheletro umano e animazioni, da cui riadattare (licenza e cartella). I mostri: solo i «Big», gli altri non hanno gambe.
 const MODELLI = path.join(radice, 'confronto-avatar-3d', 'modelli');
 const PACCHETTI = [
+  { id: 'quaternius-ual', nome: 'Quaternius, Universal Animation Library 1 e 2 (Standard)', licenza: 'CC0 1.0' },
+  { id: 'quaternius-robot', nome: 'Quaternius, Animated Robot (RobotExpressive di three.js)', licenza: 'CC0 1.0' },
   { id: 'quaternius-animati', nome: 'Quaternius, Ultimate Animated Character Pack', licenza: 'CC0 1.0' },
   { id: 'quaternius-donna', nome: 'Quaternius, Ultimate Modular Women', licenza: 'CC0 1.0' },
   { id: 'quaternius-rpg', nome: 'Quaternius, RPG Characters', licenza: 'CC0 1.0' },

@@ -1,8 +1,8 @@
-# Fonti dei modelli KayKit del laboratorio
+# Fonti dei modelli del laboratorio (KayKit e animazioni da riadattare)
 
 Verificate il 19 novembre 2026 confrontando l'impronta (hash git del contenuto) di ogni nostro file con quelle dei repository e dello zip d'origine: **tutti i file sono identici byte per byte** alla fonte indicata. I modelli scaricati non sono in git (`.gitignore`): se il disco si perde, si riscaricano da qui.
 
-Autore di tutti i pacchetti: **Kay Lousberg** (www.kaylousberg.com, https://kaylousberg.itch.io). Licenza: **CC0 1.0** (dominio pubblico; citare l'autore è facoltativo).
+Autore dei pacchetti KayKit: **Kay Lousberg** (www.kaylousberg.com, https://kaylousberg.itch.io). Licenza: **CC0 1.0** (dominio pubblico; citare l'autore è facoltativo).
 
 ## `confronto-avatar-3d/modelli/kaykit2/`: quelli dell'app (77 file)
 
@@ -115,3 +115,21 @@ Autore di tutti i pacchetti: **Kay Lousberg** (www.kaylousberg.com, https://kayl
 - **Fonte:** https://opengameart.org/content/kaykit-character-animations, zip https://opengameart.org/sites/default/files/kaykit_character_animations_1.2.zip (7,9 MB).
 - `KayKit_AnimatedCharacter_v1.2.glb` = `Animations/gltf/KayKit_AnimatedCharacter_v1.2.glb` dello zip (SHA-256 `9d91991cbb863152…`).
 - Versione del 2021 per un omino di prova con 6 ossa: non è compatibile con gli scheletri dei personaggi. Licenza: `Licenza-KayKit-scheletri-animazioni.txt`.
+
+## Animazioni da riadattare sui KayKit (aggiunte il 19 novembre 2026)
+
+Pacchetti con scheletro umano e clip che `pacchetto/strumenti/riadatta.html` può portare sugli scheletri KayKit 2.0 (guida in `pacchetto/strumenti/LEGGIMI.md`). Autore: **Quaternius** (Tomás Laulhé, https://quaternius.com). Licenza: **CC0 1.0**. Scaricati da Claude per l'utente; i file stanno in cartelle ignorate da git (anche gli zip originali, per riscontro).
+
+### `confronto-avatar-3d/modelli/quaternius-ual/`: Universal Animation Library 1 e 2, Standard (gratuita)
+
+- **Fonte:** https://quaternius.itch.io/universal-animation-library e https://quaternius.itch.io/universal-animation-library-2 (download gratuito; Pro e Source a pagamento hanno più clip). Anteprima di tutte le clip: https://quaternius.com/animviewer.html. Licenza: `Licenza-Quaternius-UAL.txt`.
+- `Universal Animation Library[Standard].zip` SHA-256 `cc73fc4e495b82958207316596317a3f40b9fa38065bde1027937452da537724`
+- `Universal Animation Library 2[Standard].zip` SHA-256 `4008ea208a604773a2b2177d965f0f5d3195498b5bf838c3f5785d68e95f2a68`
+- `UAL1_Standard.glb` = `Unreal-Godot/UAL1_Standard.glb` dello zip 1 (SHA-256 `69591853d817488edaa8fd9bf8fc1d821eaeaf789f8627b3cd23b41c4ed67997`), 43 clip: A_TPose, Crouch_Fwd_Loop, Crouch_Idle_Loop, Dance_Loop, Death01, Driving_Loop, Fixing_Kneeling, Hit_Chest, Hit_Head, Idle_Loop, Idle_Talking_Loop, Idle_Torch_Loop, Interact, Jog_Fwd_Loop, Jump_Land, Jump_Loop, Jump_Start, PickUp_Table, Pistol_* (6), Punch_Cross, Punch_Jab, Push_Loop, Roll, Sitting_Enter, Sitting_Exit, Sitting_Idle_Loop, Sitting_Talking_Loop, Spell_Simple_* (4), Sprint_Loop, Swim_Fwd_Loop, Swim_Idle_Loop, Sword_Attack, Sword_Idle, Walk_Formal_Loop, Walk_Loop.
+- `UAL2_Standard.glb` = `Unreal-Godot/UAL2_Standard.glb` dello zip 2 (SHA-256 `8cee20ab1bc55130092447e810e26df22dd2803eccc54f52137a7d54d7ab88a8`), 43 clip, fra cui Yes, Idle_No_Loop, Idle_FoldArms_Loop, Consume, Hit_Knockback, LayToIdle, OverhandThrow, Chest_Open, Idle_Rail_Call, Zombie_*, Sword_*, Shield_*, Farm_*, NinjaJump_*, Slide_*.
+- Scheletro stile Unreal (`pelvis`, `spine_01…03`, `upperarm_l`, `hand_l`, `thigh_l`, `calf_l`, dita). Non c'è un'Idle neutra in UAL2: il riferimento si fa con `A_TPose` ↔ `T-Pose` di KayKit. I file `_RM` (root motion) e gli FBX degli zip non sono stati copiati.
+
+### `confronto-avatar-3d/modelli/quaternius-robot/`: Animated Robot (2018)
+
+- **Fonte del pacchetto:** https://opengameart.org/content/animated-lowpoly-robot, zip `Animated Robot - Oct 2018.zip` (SHA-256 `5128d2cf906835895b931f6c1e764296ba2e01d3a30d809035fc6c1ee8a1c1ee`; dentro solo FBX, OBJ, Blend e `License.txt`, copiato come `License-originale.txt`).
+- **GLB usato:** `RobotExpressive.glb` degli esempi di three.js, tag r153: https://raw.githubusercontent.com/mrdoob/three.js/r153/examples/models/gltf/RobotExpressive/RobotExpressive.glb (SHA-256 `047f5e5fb3bb6d378bd1df16ca6137f2a596c99b3a1b5690b4020c05aaf6f319`), convertito da Don McCurdy. 14 clip: Dance, Death, Idle, Jump, No, Punch, Running, Sitting, Standing, ThumbsUp, Walking, WalkJump, Wave, Yes. Licenza: `Licenza-Quaternius-Robot.txt`.
