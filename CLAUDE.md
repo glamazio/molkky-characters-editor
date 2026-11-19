@@ -30,6 +30,8 @@ Qui si sperimenta l'avatar 3D; in produzione oggi c'è solo la caricatura 2D del
 - **Preferenza dell'utente: VerseEngine** (detta il 15 novembre 2026), Quaternius come seconda scelta.
 - **Altre bozze dell'8 novembre** in `bozze-8-novembre/` (spostate qui dal repository Mölkky il 15 novembre): `avatar-basi-open-source.html` (Open Peeps e DiceBear, 2D), `avatar-moduli-bozza.html` (schema a porte e manifesto dei moduli), `avatar-3d-moduli.html` (omino 3D a socket con Three.js da CDN; si apre come file).
 
+**Fonti dei modelli KayKit:** `FONTI.md` (repository, commit e percorso d'origine di ogni file, verificati byte per byte il 19 novembre 2026). I modelli scaricati non sono in git: si riscaricano da lì.
+
 ## Pacchetto per l'app (dal 15 novembre 2026)
 
 - Questa cartella è un **repository git a parte** (`.gitignore` esclude i modelli scaricati: fonti e licenze nei `Licenza-*.txt`). `rilascio/**` è `-text` in `.gitattributes`: i byte devono restare quelli del manifesto.
