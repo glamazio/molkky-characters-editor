@@ -10,7 +10,22 @@ const PORTA = Number(process.env.PORTA) || 3202;
 const TIPI = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json',
   '.glb': 'model/gltf-binary', '.png': 'image/png', '.jpg': 'image/jpeg', '.md': 'text/plain; charset=utf-8', '.txt': 'text/plain; charset=utf-8' };
 
+// Pacchetti con scheletro umano e animazioni, da cui riadattare (licenza e cartella). I mostri: solo i «Big», gli altri non hanno gambe.
+const MODELLI = path.join(radice, 'confronto-avatar-3d', 'modelli');
+const PACCHETTI = [
+  { id: 'quaternius-animati', nome: 'Quaternius, Ultimate Animated Character Pack', licenza: 'CC0 1.0' },
+  { id: 'quaternius-donna', nome: 'Quaternius, Ultimate Modular Women', licenza: 'CC0 1.0' },
+  { id: 'quaternius-rpg', nome: 'Quaternius, RPG Characters', licenza: 'CC0 1.0' },
+  { id: 'quaternius-mostri', nome: 'Quaternius, Ultimate Monsters (Big)', licenza: 'CC0 1.0', filtro: /^Big_/ },
+  { id: 'kaykit', nome: 'KayKit Adventurers 1.0 e Skeletons 1.0', licenza: 'CC0 1.0' },
+];
+function elenco() {
+  return PACCHETTI.map(({ filtro, ...pk }) => ({ ...pk,
+    file: fs.readdirSync(path.join(MODELLI, pk.id)).filter(f => f.endsWith('.glb') && (!filtro || filtro.test(f))).sort() }));
+}
+
 http.createServer((req, res) => {
+  if (req.url === '/elenco-sorgenti') { res.writeHead(200, { 'Content-Type': 'application/json' }); res.end(JSON.stringify(elenco())); return; }
   let p;
   try { p = path.resolve(radice, '.' + decodeURIComponent(new URL(req.url, 'http://x').pathname)); } catch { res.writeHead(400).end(); return; }
   // Niente uscite dalla cartella del laboratorio.

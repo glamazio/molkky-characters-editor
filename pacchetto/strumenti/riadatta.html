@@ -25,20 +25,22 @@
   #stato.err { color: #ff8f8f; }
   .viste { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 14px; align-items: flex-start; }
   canvas { background: var(--pan); border-radius: 10px; max-width: 100%; }
-  #vivo { width: 300px; height: 360px; touch-action: pan-y; }
+  #vivo, #orig { width: 300px; height: 360px; touch-action: pan-y; }
+  #ossa { grid-column: 1 / -1; font-size: 12px; color: var(--deb); margin: 0; }
   #c { width: 900px; height: 260px; }
   .cap { font-size: 12px; color: var(--deb); margin: 4px 0 0; }
 </style>
 <body>
 <main>
   <h1>Riadatta una clip</h1>
-  <p class="sub">Prende un'animazione da un altro pacchetto (Quaternius) e la mette su uno scheletro KayKit, partendo dalla posa di riposo. Il file scaricato va in <code>pacchetto/clip/</code>; poi la clip si usa in <code>pacchetto.json</code> col suo nome.</p>
+  <p class="sub">Prende un'animazione da un altro pacchetto (Quaternius, KayKit 1.0) e la mette su uno scheletro KayKit 2.0, partendo dalla posa di riposo. Le ossa si abbinano da sole dai nomi. La clip vale per tutti i personaggi dello stesso scheletro (medio o grande). Il file scaricato va in <code>pacchetto/clip/</code>, con la riga in <code>clip/FONTI.md</code>; poi la clip si usa in <code>pacchetto.json</code> col suo nome.</p>
   <form id="f">
-    <label>File sorgente (Quaternius)<input id="sorg" value="/confronto-avatar-3d/modelli/quaternius-animati/BaseCharacter.glb"></label>
+    <label>Personaggio sorgente<select id="sorg"></select></label>
     <label>Clip della sorgente<select id="clip"><option>Defeat</option></select></label>
     <label>Personaggio KayKit<select id="pers"></select></label>
     <label>Posa di partenza<select id="part"><option>Idle_A</option><option value="">(posa di legatura)</option></select></label>
     <label>Nome della clip nuova<input id="nome" value="Delusione" pattern="[A-Za-z0-9_]+"></label>
+    <p id="ossa"></p>
     <div class="azioni">
       <button class="pri" id="vai" type="submit">Riadatta</button>
       <button id="scarica" type="button" disabled>Scarica il file</button>
@@ -46,7 +48,8 @@
     </div>
   </form>
   <div class="viste">
-    <div><canvas id="vivo" width="600" height="720"></canvas><p class="cap">In movimento, a ciclo. Trascina per girarlo.</p></div>
+    <div><canvas id="orig" width="600" height="720"></canvas><p class="cap">Originale, nel suo pacchetto.</p></div>
+    <div><canvas id="vivo" width="600" height="720"></canvas><p class="cap">Riadattata, a ciclo. Trascina per girarlo.</p></div>
     <div><canvas id="c" width="900" height="260"></canvas><p class="cap">Quattro istanti: 10%, 40%, 70%, fine.</p></div>
   </div>
 </main>
@@ -61,10 +64,22 @@ const wq = o => o.getWorldQuaternion(new THREE.Quaternion());
 const wp = o => o.getWorldPosition(new THREE.Vector3());
 const K2 = '/confronto-avatar-3d/modelli/kaykit2/';
 
-// Ossa KayKit (nomi come li vede three: senza punti) -> ossa Quaternius (Ultimate Animated Character Pack).
-const MAPPA_QUATERNIUS = { hips: 'Hips', spine: 'Abdomen', chest: 'Torso', head: 'Head',
-  upperarml: 'UpperArmL', lowerarml: 'LowerArmL', wristl: 'FistL', upperarmr: 'UpperArmR', lowerarmr: 'LowerArmR', wristr: 'FistR',
-  upperlegl: 'UpperLegL', lowerlegl: 'LowerLegL', footl: 'FootL', upperlegr: 'UpperLegR', lowerlegr: 'LowerLegR', footr: 'FootR' };
+// Abbinamento automatico delle ossa: per ogni osso KayKit (nomi come li vede three: senza punti) i nomi possibili nella sorgente,
+// in ordine di preferenza, senza maiuscole. Vale per Quaternius (Hips, Abdomen, Torso/Chest, UpperArm.L, Fist.L o Wrist.L…)
+// e per KayKit 1.0 (stessi nomi di KayKit 2.0). Il petto prende l'osso più in alto del busto: col metodo «nel mondo» conta solo dove sta.
+const CANDIDATI = { hips: ['hips', 'pelvis'], spine: ['abdomen', 'spine'], chest: ['chest', 'torso', 'spine2', 'spine1'], head: ['head'] };
+for (const s of ['l', 'r']) Object.assign(CANDIDATI, {
+  ['upperarm' + s]: ['upperarm' + s], ['lowerarm' + s]: ['lowerarm' + s, 'forearm' + s], ['wrist' + s]: ['wrist' + s, 'fist' + s, 'hand' + s],
+  ['upperleg' + s]: ['upperleg' + s, 'thigh' + s], ['lowerleg' + s]: ['lowerleg' + s, 'shin' + s, 'calf' + s], ['foot' + s]: ['foot' + s] });
+const NECESSARIE = ['hips', 'head', 'upperarml', 'upperarmr', 'lowerarml', 'lowerarmr', 'upperlegl', 'upperlegr', 'lowerlegl', 'lowerlegr'];
+function mappaAuto(bs, bt) {
+  const basse = new Map([...bs.keys()].map(n => [n.toLowerCase(), n]));
+  const m = {};
+  for (const [t, c] of Object.entries(CANDIDATI)) if (bt.has(t)) { const s = c.map(x => basse.get(x)).find(Boolean); if (s) m[t] = s; }
+  const mancano = NECESSARIE.filter(t => !m[t]);
+  if (mancano.length) throw new Error('scheletro sorgente non adatto: non trovo ' + mancano.join(', '));
+  return m;
+}
 
 // Posa di legatura (bind pose): quella in cui la pelle è stata attaccata alle ossa.
 // In three: mondo dell'osso al momento della legatura = bindMatrix · inversa(boneInverse).
@@ -86,12 +101,13 @@ function legatura(root) {
 // partenza (facoltativa, preferita): { file, clip } con la posa da cui parte il bersaglio (KayKit: «Idle_A»). Allora il riferimento
 // è «primo fotogramma della clip sorgente ↔ quella posa»: la clip nuova comincia esattamente dal riposo del personaggio.
 // tposa (facoltativa): { file, clip } con una posa a T del bersaglio. Senza nessuna delle due: posa di legatura.
-window.riadatta = async ({ sorgente, clipNome, bersaglio, nome, mappa = MAPPA_QUATERNIUS, fianchiB = 'hips', fianchiS = 'Hips', tposa, partenza, fps = 30 }) => {
+window.riadatta = async ({ sorgente, clipNome, bersaglio, nome, mappa, fianchiB = 'hips', fianchiS, tposa, partenza, fonte, fps = 30 }) => {
   const S = await loader.loadAsync(sorgente), T = await loader.loadAsync(bersaglio);
   const clip = S.animations.find(a => a.name === clipNome);
   if (!clip) throw new Error('clip non trovata: ' + clipNome);
   S.scene.updateMatrixWorld(true); T.scene.updateMatrixWorld(true);
   const bs = ossa(S.scene), bt = ossa(T.scene);
+  mappa = mappa || mappaAuto(bs, bt); fianchiS = fianchiS || mappa[fianchiB];
   for (const [t, s] of Object.entries(mappa)) { if (!bt.has(t)) throw new Error('bersaglio senza ' + t); if (!bs.has(s)) throw new Error('sorgente senza ' + s); }
   const posaB = partenza || tposa;
   const qui = bones => new Map([...bones].map(([n, b]) => [n, { q: wq(b), p: wp(b) }]));
@@ -138,83 +154,102 @@ window.riadatta = async ({ sorgente, clipNome, bersaglio, nome, mappa = MAPPA_QU
   tracce.push(new THREE.VectorKeyframeTrack(fianchiB + '.position', tempi, pos));
   const out = new THREE.AnimationClip(nome, clip.duration, tracce);
   // file: solo lo scheletro del bersaglio (niente mesh) con la clip; i nomi delle ossa li rimette a posto esporta.mjs
-  const sk = T.scene.clone(true); const via = []; sk.traverse(o => { if (o.isMesh) via.push(o); }); via.forEach(o => o.parent.remove(o));
+  const sk = T.scene.clone(true); sk.userData = { fonte: fonte || sorgente + ' · ' + clipNome, riadattata: 'pacchetto/strumenti/riadatta.html' }; const via = []; sk.traverse(o => { if (o.isMesh) via.push(o); }); via.forEach(o => o.parent.remove(o));
   const glb = await new GLTFExporter().parseAsync(sk, { binary: true, animations: [out] });
   window.anteprima(T, out);
   let s = ''; const u = new Uint8Array(glb); for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000));
-  return { durata: clip.duration, fotogrammi: n, glb: btoa(s) };
+  return { durata: clip.duration, fotogrammi: n, glb: btoa(s), mappa };
 };
 
-// ---- anteprima: quattro pose ferme + il personaggio in movimento ----
+// ---- anteprima: quattro pose ferme + personaggi in movimento (originale e riadattato) ----
 const luci = sc => { sc.add(new THREE.HemisphereLight(0xffffff, 0x8a8f99, 2.2)); const dl = new THREE.DirectionalLight(0xffffff, 1.6); dl.position.set(2, 4, 3); sc.add(dl); };
-let vivo = null;   // { r, sc, cam, mixer, T }
+const altezza = o => { o.updateMatrixWorld(true); const b = new THREE.Box3().setFromObject(o); return { h: Math.max(b.max.y - b.min.y, 0.1), y0: b.min.y }; };
+// Una tela con un personaggio che ripete una clip; si gira trascinando.
+function visore(id) {
+  const el = document.getElementById(id);
+  const r = new THREE.WebGLRenderer({ canvas: el, antialias: true }); r.outputColorSpace = THREE.SRGBColorSpace;
+  const sc = new THREE.Scene(); sc.background = new THREE.Color('#3b3a6e'); luci(sc);
+  const v = { obj: null, mixer: null, cam: null, orologio: new THREE.Clock() };
+  let x0 = null;
+  el.addEventListener('pointerdown', e => { x0 = e.clientX; el.setPointerCapture(e.pointerId); });
+  el.addEventListener('pointermove', e => { if (x0 === null || !v.obj) return; v.obj.rotation.y += (e.clientX - x0) * 0.01; x0 = e.clientX; });
+  el.addEventListener('pointerup', () => { x0 = null; });
+  r.setAnimationLoop(() => { if (!v.mixer) return; v.mixer.update(v.orologio.getDelta()); r.render(sc, v.cam); });
+  v.mostra = (obj, clip) => {
+    if (v.mixer) v.mixer.stopAllAction();
+    if (v.obj) sc.remove(v.obj);
+    v.obj = obj; obj.rotation.y = 0.6; obj.position.set(0, 0, 0); sc.add(obj);
+    v.mixer = new THREE.AnimationMixer(obj); v.mixer.clipAction(clip).play(); v.mixer.setTime(0);
+    const { h, y0 } = altezza(obj);
+    v.cam = new THREE.PerspectiveCamera(30, 300 / 360, 0.01, 1000); v.cam.position.set(0, y0 + h * 0.55, h * 3.4); v.cam.lookAt(0, y0 + h * 0.45, 0);
+    v.orologio.getDelta();
+  };
+  return v;
+}
+const vista = {};
 window.anteprima = (T, clip) => {
   const r = new THREE.WebGLRenderer({ canvas: document.getElementById('c'), antialias: true, preserveDrawingBuffer: true }); r.outputColorSpace = THREE.SRGBColorSpace;
   const sc = new THREE.Scene(); sc.background = new THREE.Color('#3b3a6e'); luci(sc);
   const mixer = new THREE.AnimationMixer(T.scene); mixer.clipAction(clip).play();
   sc.add(T.scene); T.scene.rotation.y = 0.6;
-  const box = new THREE.Box3().setFromObject(T.scene), h = box.max.y - box.min.y || 2;
+  const { h } = altezza(T.scene);
   const cam = new THREE.PerspectiveCamera(30, 225 / 260, 0.1, 100); cam.position.set(0, h * 0.55, h * 3.2); cam.lookAt(0, h * 0.45, 0);
   r.setScissorTest(true);
   [0.1, 0.4, 0.7, 1].forEach((f, i) => {
     mixer.setTime(clip.duration * f * 0.999);
     r.setViewport(i * 225, 0, 225, 260); r.setScissor(i * 225, 0, 225, 260); r.render(sc, cam);
   });
-  // in movimento: lo stesso personaggio, spostato nella tela grande
-  sc.remove(T.scene);
-  if (!vivo) {
-    const rv = new THREE.WebGLRenderer({ canvas: document.getElementById('vivo'), antialias: true }); rv.outputColorSpace = THREE.SRGBColorSpace;
-    const sv = new THREE.Scene(); sv.background = new THREE.Color('#3b3a6e'); luci(sv);
-    vivo = { r: rv, sc: sv, orologio: new THREE.Clock() };
-    giraConIlDito(document.getElementById('vivo'));
-    rv.setAnimationLoop(() => {
-      if (!vivo.mixer) return;
-      vivo.mixer.update(vivo.orologio.getDelta()); vivo.r.render(vivo.sc, vivo.cam);
-    });
-  }
-  if (vivo.T) vivo.sc.remove(vivo.T.scene);
-  vivo.T = T; vivo.sc.add(T.scene); T.scene.rotation.y = 0.6;
-  vivo.cam = new THREE.PerspectiveCamera(30, 300 / 360, 0.1, 100); vivo.cam.position.set(0, h * 0.55, h * 3.4); vivo.cam.lookAt(0, h * 0.45, 0);
-  vivo.mixer = new THREE.AnimationMixer(T.scene); vivo.mixer.clipAction(clip).play(); vivo.orologio.getDelta();
+  mixer.stopAllAction(); sc.remove(T.scene);
+  (vista.vivo ||= visore('vivo')).mostra(T.scene, clip);
 };
-function giraConIlDito(el) {
-  let x0 = null;
-  el.addEventListener('pointerdown', e => { x0 = e.clientX; el.setPointerCapture(e.pointerId); });
-  el.addEventListener('pointermove', e => { if (x0 === null || !vivo?.T) return; vivo.T.scene.rotation.y += (e.clientX - x0) * 0.01; x0 = e.clientX; });
-  el.addEventListener('pointerup', () => { x0 = null; });
-}
 
 // ---- modulo ----
 const $ = id => document.getElementById(id);
 const stato = (t, err) => { $('stato').textContent = t; $('stato').className = err ? 'err' : ''; };
-let catalogo = [], ultimo = null;
+const esc = t => String(t).replace(/[<>&"]/g, c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' })[c]);
+const M = '/confronto-avatar-3d/modelli/';
+let catalogo = [], pacchetti = [], ultimo = null, sorgente = null;   // sorgente: { file, g } caricata per l'originale
 
+const pacchettoDi = f => pacchetti.find(pk => f.startsWith(M + pk.id + '/'));
+const nomeClip = n => n.replace(/^.*\|/, '');   // «CharacterArmature|Wave» -> «Wave»
 async function clipDellaSorgente() {
-  const sel = $('clip'), prima = sel.value;
+  const sel = $('clip'), prima = sel.value, file = $('sorg').value;
   try {
-    const g = await loader.loadAsync($('sorg').value.trim());
-    sel.innerHTML = g.animations.map(a => `<option>${a.name.replace(/[<&]/g, '')}</option>`).join('');
+    const g = await loader.loadAsync(file);
+    sorgente = { file, g };
+    sel.innerHTML = g.animations.map(a => `<option value="${esc(a.name)}">${esc(nomeClip(a.name))}</option>`).join('');
     if ([...sel.options].some(o => o.value === prima)) sel.value = prima;
-    stato(`Sorgente: ${g.animations.length} clip.`);
+    stato(`${pacchettoDi(file)?.nome || 'Sorgente'}: ${g.animations.length} clip.`);
+    mostraOriginale();
   } catch (e) { stato('Sorgente non trovata: ' + e.message, true); }
+}
+function mostraOriginale() {
+  if (!sorgente) return;
+  const clip = sorgente.g.animations.find(a => a.name === $('clip').value);
+  if (clip) (vista.orig ||= visore('orig')).mostra(sorgente.g.scene, clip);
 }
 
 $('sorg').addEventListener('change', clipDellaSorgente);
+$('clip').addEventListener('change', mostraOriginale);
 $('f').addEventListener('submit', async e => {
   e.preventDefault();
   const nome = $('nome').value.trim();
   if (!/^[A-Za-z0-9_]+$/.test(nome)) { stato('Nome della clip: solo lettere, cifre e _.', true); return; }
   const p = catalogo.find(x => x.id === $('pers').value);
   const Rig = p.rig === 'large' ? 'Large' : 'Medium';
-  $('vai').disabled = true; $('scarica').disabled = true; stato('Riadatto…');
+  const file = $('sorg').value, pk = pacchettoDi(file), clipNome = $('clip').value;
+  const fonte = `${pk ? pk.nome : 'sorgente'}, ${file.split('/').pop()}, clip «${nomeClip(clipNome)}» (${pk ? pk.licenza : 'licenza da verificare'})`;
+  $('vai').disabled = true; $('scarica').disabled = true; $('ossa').textContent = ''; stato('Riadatto…');
   try {
     const r = await window.riadatta({
-      sorgente: $('sorg').value.trim(), clipNome: $('clip').value, bersaglio: K2 + 'personaggi/' + p.id + '.glb', nome,
+      sorgente: file, clipNome, bersaglio: K2 + 'personaggi/' + p.id + '.glb', nome, fonte,
       partenza: $('part').value ? { file: K2 + 'animazioni/Rig_' + Rig + '_General.glb', clip: $('part').value } : undefined,
     });
     ultimo = { r, file: `Rig_${Rig}_${nome}.glb` };
     $('scarica').disabled = false;
     stato(`Fatto: ${r.durata.toFixed(2)} s, ${r.fotogrammi} fotogrammi, scheletro ${p.rig === 'large' ? 'grande' : 'medio'}. Il file va in pacchetto/clip/ come ${ultimo.file}.`);
+    $('ossa').textContent = 'Ossa abbinate: ' + Object.entries(r.mappa).map(([t, s]) => `${t} ← ${s}`).join(', ') +
+      `.  Riga per FONTI.md: | \`${ultimo.file}\` | \`${nome}\` (${r.durata.toFixed(1).replace('.', ',')} s) | ${fonte} | prova su ${p.id}, partenza ${$('part').value || 'legatura'} |`;
   } catch (err) { stato('Errore: ' + err.message, true); }
   $('vai').disabled = false;
 });
@@ -226,11 +261,14 @@ $('scarica').addEventListener('click', () => {
 });
 
 try {
-  catalogo = await (await fetch(K2 + 'catalogo.json')).json();
-  $('pers').innerHTML = catalogo.map(p => `<option value="${p.id}">${p.label} (${p.rig === 'large' ? 'grande' : 'medio'})</option>`).join('');
+  [catalogo, pacchetti] = await Promise.all([fetch(K2 + 'catalogo.json').then(r => r.json()), fetch('/elenco-sorgenti').then(r => r.json())]);
+  $('pers').innerHTML = catalogo.map(p => `<option value="${esc(p.id)}">${esc(p.label)} (${p.rig === 'large' ? 'grande' : 'medio'})</option>`).join('');
   $('pers').value = 'Knight';
+  $('sorg').innerHTML = pacchetti.map(pk => `<optgroup label="${esc(pk.nome)}">` +
+    pk.file.map(f => `<option value="${esc(M + pk.id + '/' + f)}">${esc(f.replace(/\.glb$/, ''))}</option>`).join('') + '</optgroup>').join('');
+  $('sorg').value = M + 'quaternius-animati/BaseCharacter.glb';
   await clipDellaSorgente();
-  $('clip').value = 'Defeat';
+  $('clip').value = 'Defeat'; mostraOriginale();
 } catch (e) { stato('Non trovo i modelli: apri la pagina con «npm run strumenti», non come file.', true); }
 window.PRONTO = true;   // per gli script che la comandano
 </script>

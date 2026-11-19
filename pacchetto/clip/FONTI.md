@@ -1,6 +1,6 @@
 # Clip riadattate
 
-Clip prese da altri pacchetti e riadattate sugli scheletri KayKit con `pacchetto/strumenti/riadatta.html`
+Clip prese da altri pacchetti (Quaternius: animati, donna, mostri «Big», RPG; KayKit 1.0) e riadattate sugli scheletri KayKit 2.0 con `pacchetto/strumenti/riadatta.html`
 (si apre con `npm run strumenti`, poi http://127.0.0.1:3202/pacchetto/strumenti/riadatta.html; un file per clip, `Rig_<Scheletro>_<Nome>.glb`)
 (per ogni osso, la rotazione rispetto alla posa di partenza, nello spazio del mondo, va all'osso gemello).
 `esporta.mjs` le legge insieme alle librerie KayKit (`Rig_Medium_*.glb`, `Rig_Large_*.glb`).
