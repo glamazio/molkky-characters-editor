@@ -1,13 +1,55 @@
 <!doctype html>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Riadatta una clip</title>
 <!-- Strumento del laboratorio: copia una clip da uno scheletro a un altro (per esempio «Defeat» di Quaternius su KayKit).
-     Si apre servendo la cartella del laboratorio (python -m http.server) e si usa da script: window.riadatta({...}).
-     Metodo: per ogni osso, la rotazione rispetto alla posa di riposo (nello spazio del mondo) si applica all'osso gemello;
+     Si apre con «npm run strumenti» (serve la cartella del laboratorio su 127.0.0.1:3202); aperta come file non funziona.
+     Si usa a mano (modulo qui sotto) o da script: window.riadatta({...}).
+     Metodo: per ogni osso, la rotazione rispetto alla posa di partenza (nello spazio del mondo) si applica all'osso gemello;
      così non conta come sono orientati gli assi delle ossa nei due pacchetti. I fianchi si spostano in proporzione all'altezza. -->
 <script type="importmap">{ "imports": { "three": "/node_modules/three/build/three.module.js", "three/addons/": "/node_modules/three/examples/jsm/" } }</script>
-<body style="margin:0;background:#2b2a5e">
-<canvas id="c" width="900" height="260"></canvas>
+<style>
+  :root { --sf: #2b2a5e; --pan: #3b3a6e; --tx: #eeeefa; --deb: #b9b8dc; --acc: #f2b84b; }
+  body { margin: 0; background: var(--sf); color: var(--tx); font: 15px/1.45 system-ui, sans-serif; }
+  main { max-width: 960px; margin: 0 auto; padding: 16px; }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  p.sub { margin: 0 0 16px; color: var(--deb); }
+  form { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px 14px; background: var(--pan); padding: 14px; border-radius: 10px; }
+  label { display: grid; gap: 4px; font-size: 13px; color: var(--deb); }
+  input, select, button { font: inherit; padding: 7px 9px; border-radius: 7px; border: 1px solid #5a5996; background: #232250; color: var(--tx); min-width: 0; }
+  .azioni { grid-column: 1 / -1; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  button { cursor: pointer; }
+  button.pri { background: var(--acc); color: #222; border-color: var(--acc); font-weight: 600; }
+  button:disabled { opacity: .5; cursor: default; }
+  #stato { color: var(--deb); }
+  #stato.err { color: #ff8f8f; }
+  .viste { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 14px; align-items: flex-start; }
+  canvas { background: var(--pan); border-radius: 10px; max-width: 100%; }
+  #vivo { width: 300px; height: 360px; touch-action: pan-y; }
+  #c { width: 900px; height: 260px; }
+  .cap { font-size: 12px; color: var(--deb); margin: 4px 0 0; }
+</style>
+<body>
+<main>
+  <h1>Riadatta una clip</h1>
+  <p class="sub">Prende un'animazione da un altro pacchetto (Quaternius) e la mette su uno scheletro KayKit, partendo dalla posa di riposo. Il file scaricato va in <code>pacchetto/clip/</code>; poi la clip si usa in <code>pacchetto.json</code> col suo nome.</p>
+  <form id="f">
+    <label>File sorgente (Quaternius)<input id="sorg" value="/confronto-avatar-3d/modelli/quaternius-animati/BaseCharacter.glb"></label>
+    <label>Clip della sorgente<select id="clip"><option>Defeat</option></select></label>
+    <label>Personaggio KayKit<select id="pers"></select></label>
+    <label>Posa di partenza<select id="part"><option>Idle_A</option><option value="">(posa di legatura)</option></select></label>
+    <label>Nome della clip nuova<input id="nome" value="Delusione" pattern="[A-Za-z0-9_]+"></label>
+    <div class="azioni">
+      <button class="pri" id="vai" type="submit">Riadatta</button>
+      <button id="scarica" type="button" disabled>Scarica il file</button>
+      <span id="stato">Caricamento…</span>
+    </div>
+  </form>
+  <div class="viste">
+    <div><canvas id="vivo" width="600" height="720"></canvas><p class="cap">In movimento, a ciclo. Trascina per girarlo.</p></div>
+    <div><canvas id="c" width="900" height="260"></canvas><p class="cap">Quattro istanti: 10%, 40%, 70%, fine.</p></div>
+  </div>
+</main>
 <script type="module">
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
@@ -17,8 +59,14 @@ const loader = new GLTFLoader();
 const ossa = root => { const m = new Map(); root.traverse(o => { if (o.isBone) m.set(o.name, o); }); return m; };
 const wq = o => o.getWorldQuaternion(new THREE.Quaternion());
 const wp = o => o.getWorldPosition(new THREE.Vector3());
-// Posa di legatura (bind pose): quella in cui la pelle è stata attaccata alle ossa. È il riferimento giusto per tutti e due
-// gli scheletri: la posa «del file» può essere un'altra (Quaternius la salva con le braccia giù, KayKit a T).
+const K2 = '/confronto-avatar-3d/modelli/kaykit2/';
+
+// Ossa KayKit (nomi come li vede three: senza punti) -> ossa Quaternius (Ultimate Animated Character Pack).
+const MAPPA_QUATERNIUS = { hips: 'Hips', spine: 'Abdomen', chest: 'Torso', head: 'Head',
+  upperarml: 'UpperArmL', lowerarml: 'LowerArmL', wristl: 'FistL', upperarmr: 'UpperArmR', lowerarmr: 'LowerArmR', wristr: 'FistR',
+  upperlegl: 'UpperLegL', lowerlegl: 'LowerLegL', footl: 'FootL', upperlegr: 'UpperLegR', lowerlegr: 'LowerLegR', footr: 'FootR' };
+
+// Posa di legatura (bind pose): quella in cui la pelle è stata attaccata alle ossa.
 // In three: mondo dell'osso al momento della legatura = bindMatrix · inversa(boneInverse).
 function legatura(root) {
   const m = new Map();
@@ -35,18 +83,16 @@ function legatura(root) {
 }
 
 // mappa: osso del bersaglio -> osso della sorgente (nomi come li vede three: senza punti).
-// tposa (facoltativa): { file, clip } con la posa a T del bersaglio (KayKit: «T-Pose» nella libreria General dello scheletro).
 // partenza (facoltativa, preferita): { file, clip } con la posa da cui parte il bersaglio (KayKit: «Idle_A»). Allora il riferimento
 // è «primo fotogramma della clip sorgente ↔ quella posa»: la clip nuova comincia esattamente dal riposo del personaggio.
-window.riadatta = async ({ sorgente, clipNome, bersaglio, nome, mappa, fianchiB, fianchiS, tposa, partenza, fps = 30 }) => {
+// tposa (facoltativa): { file, clip } con una posa a T del bersaglio. Senza nessuna delle due: posa di legatura.
+window.riadatta = async ({ sorgente, clipNome, bersaglio, nome, mappa = MAPPA_QUATERNIUS, fianchiB = 'hips', fianchiS = 'Hips', tposa, partenza, fps = 30 }) => {
   const S = await loader.loadAsync(sorgente), T = await loader.loadAsync(bersaglio);
   const clip = S.animations.find(a => a.name === clipNome);
   if (!clip) throw new Error('clip non trovata: ' + clipNome);
   S.scene.updateMatrixWorld(true); T.scene.updateMatrixWorld(true);
   const bs = ossa(S.scene), bt = ossa(T.scene);
   for (const [t, s] of Object.entries(mappa)) { if (!bt.has(t)) throw new Error('bersaglio senza ' + t); if (!bs.has(s)) throw new Error('sorgente senza ' + s); }
-  // riferimento: la posa di legatura di ciascuno scheletro (a T); il bersaglio parte da lì anche per le ossa non mappate
-  // Bersaglio: se c'è la sua clip di posa a T, quella è il riferimento (la legatura dei KayKit grandi non è a T).
   const posaB = partenza || tposa;
   const qui = bones => new Map([...bones].map(([n, b]) => [n, { q: wq(b), p: wp(b) }]));
   // La posa si legge PRIMA di fermare il mixer: fermandolo, three rimette le ossa com'erano.
@@ -91,20 +137,21 @@ window.riadatta = async ({ sorgente, clipNome, bersaglio, nome, mappa, fianchiB,
   const tracce = ordine.filter(b => mappa[b.name]).map(b => new THREE.QuaternionKeyframeTrack(b.name + '.quaternion', tempi, val.get(b.name)));
   tracce.push(new THREE.VectorKeyframeTrack(fianchiB + '.position', tempi, pos));
   const out = new THREE.AnimationClip(nome, clip.duration, tracce);
-  // anteprima: quattro pose del bersaglio con la clip nuova
-  window.anteprima(T, out);
-  // file: solo lo scheletro del bersaglio (niente mesh) con la clip
+  // file: solo lo scheletro del bersaglio (niente mesh) con la clip; i nomi delle ossa li rimette a posto esporta.mjs
   const sk = T.scene.clone(true); const via = []; sk.traverse(o => { if (o.isMesh) via.push(o); }); via.forEach(o => o.parent.remove(o));
   const glb = await new GLTFExporter().parseAsync(sk, { binary: true, animations: [out] });
+  window.anteprima(T, out);
   let s = ''; const u = new Uint8Array(glb); for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000));
   return { durata: clip.duration, fotogrammi: n, glb: btoa(s) };
 };
 
+// ---- anteprima: quattro pose ferme + il personaggio in movimento ----
+const luci = sc => { sc.add(new THREE.HemisphereLight(0xffffff, 0x8a8f99, 2.2)); const dl = new THREE.DirectionalLight(0xffffff, 1.6); dl.position.set(2, 4, 3); sc.add(dl); };
+let vivo = null;   // { r, sc, cam, mixer, T }
 window.anteprima = (T, clip) => {
   const r = new THREE.WebGLRenderer({ canvas: document.getElementById('c'), antialias: true, preserveDrawingBuffer: true }); r.outputColorSpace = THREE.SRGBColorSpace;
-  const sc = new THREE.Scene(); sc.background = new THREE.Color('#3b3a6e'); sc.add(new THREE.HemisphereLight(0xffffff, 0x8a8f99, 2.2));
-  const dl = new THREE.DirectionalLight(0xffffff, 1.6); dl.position.set(2, 4, 3); sc.add(dl);
-  const mixer = new THREE.AnimationMixer(T.scene); const a = mixer.clipAction(clip); a.play();
+  const sc = new THREE.Scene(); sc.background = new THREE.Color('#3b3a6e'); luci(sc);
+  const mixer = new THREE.AnimationMixer(T.scene); mixer.clipAction(clip).play();
   sc.add(T.scene); T.scene.rotation.y = 0.6;
   const box = new THREE.Box3().setFromObject(T.scene), h = box.max.y - box.min.y || 2;
   const cam = new THREE.PerspectiveCamera(30, 225 / 260, 0.1, 100); cam.position.set(0, h * 0.55, h * 3.2); cam.lookAt(0, h * 0.45, 0);
@@ -113,6 +160,77 @@ window.anteprima = (T, clip) => {
     mixer.setTime(clip.duration * f * 0.999);
     r.setViewport(i * 225, 0, 225, 260); r.setScissor(i * 225, 0, 225, 260); r.render(sc, cam);
   });
+  // in movimento: lo stesso personaggio, spostato nella tela grande
+  sc.remove(T.scene);
+  if (!vivo) {
+    const rv = new THREE.WebGLRenderer({ canvas: document.getElementById('vivo'), antialias: true }); rv.outputColorSpace = THREE.SRGBColorSpace;
+    const sv = new THREE.Scene(); sv.background = new THREE.Color('#3b3a6e'); luci(sv);
+    vivo = { r: rv, sc: sv, orologio: new THREE.Clock() };
+    giraConIlDito(document.getElementById('vivo'));
+    rv.setAnimationLoop(() => {
+      if (!vivo.mixer) return;
+      vivo.mixer.update(vivo.orologio.getDelta()); vivo.r.render(vivo.sc, vivo.cam);
+    });
+  }
+  if (vivo.T) vivo.sc.remove(vivo.T.scene);
+  vivo.T = T; vivo.sc.add(T.scene); T.scene.rotation.y = 0.6;
+  vivo.cam = new THREE.PerspectiveCamera(30, 300 / 360, 0.1, 100); vivo.cam.position.set(0, h * 0.55, h * 3.4); vivo.cam.lookAt(0, h * 0.45, 0);
+  vivo.mixer = new THREE.AnimationMixer(T.scene); vivo.mixer.clipAction(clip).play(); vivo.orologio.getDelta();
 };
-document.title = 'pronto';
+function giraConIlDito(el) {
+  let x0 = null;
+  el.addEventListener('pointerdown', e => { x0 = e.clientX; el.setPointerCapture(e.pointerId); });
+  el.addEventListener('pointermove', e => { if (x0 === null || !vivo?.T) return; vivo.T.scene.rotation.y += (e.clientX - x0) * 0.01; x0 = e.clientX; });
+  el.addEventListener('pointerup', () => { x0 = null; });
+}
+
+// ---- modulo ----
+const $ = id => document.getElementById(id);
+const stato = (t, err) => { $('stato').textContent = t; $('stato').className = err ? 'err' : ''; };
+let catalogo = [], ultimo = null;
+
+async function clipDellaSorgente() {
+  const sel = $('clip'), prima = sel.value;
+  try {
+    const g = await loader.loadAsync($('sorg').value.trim());
+    sel.innerHTML = g.animations.map(a => `<option>${a.name.replace(/[<&]/g, '')}</option>`).join('');
+    if ([...sel.options].some(o => o.value === prima)) sel.value = prima;
+    stato(`Sorgente: ${g.animations.length} clip.`);
+  } catch (e) { stato('Sorgente non trovata: ' + e.message, true); }
+}
+
+$('sorg').addEventListener('change', clipDellaSorgente);
+$('f').addEventListener('submit', async e => {
+  e.preventDefault();
+  const nome = $('nome').value.trim();
+  if (!/^[A-Za-z0-9_]+$/.test(nome)) { stato('Nome della clip: solo lettere, cifre e _.', true); return; }
+  const p = catalogo.find(x => x.id === $('pers').value);
+  const Rig = p.rig === 'large' ? 'Large' : 'Medium';
+  $('vai').disabled = true; $('scarica').disabled = true; stato('Riadatto…');
+  try {
+    const r = await window.riadatta({
+      sorgente: $('sorg').value.trim(), clipNome: $('clip').value, bersaglio: K2 + 'personaggi/' + p.id + '.glb', nome,
+      partenza: $('part').value ? { file: K2 + 'animazioni/Rig_' + Rig + '_General.glb', clip: $('part').value } : undefined,
+    });
+    ultimo = { r, file: `Rig_${Rig}_${nome}.glb` };
+    $('scarica').disabled = false;
+    stato(`Fatto: ${r.durata.toFixed(2)} s, ${r.fotogrammi} fotogrammi, scheletro ${p.rig === 'large' ? 'grande' : 'medio'}. Il file va in pacchetto/clip/ come ${ultimo.file}.`);
+  } catch (err) { stato('Errore: ' + err.message, true); }
+  $('vai').disabled = false;
+});
+$('scarica').addEventListener('click', () => {
+  if (!ultimo) return;
+  const b = Uint8Array.from(atob(ultimo.r.glb), c => c.charCodeAt(0));
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([b], { type: 'model/gltf-binary' })); a.download = ultimo.file; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+});
+
+try {
+  catalogo = await (await fetch(K2 + 'catalogo.json')).json();
+  $('pers').innerHTML = catalogo.map(p => `<option value="${p.id}">${p.label} (${p.rig === 'large' ? 'grande' : 'medio'})</option>`).join('');
+  $('pers').value = 'Knight';
+  await clipDellaSorgente();
+  $('clip').value = 'Defeat';
+} catch (e) { stato('Non trovo i modelli: apri la pagina con «npm run strumenti», non come file.', true); }
+window.PRONTO = true;   // per gli script che la comandano
 </script>

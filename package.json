@@ -5,7 +5,8 @@
   "description": "Laboratorio avatar 3D di Mölkky: esperimenti e pacchetto per l'app",
   "type": "module",
   "scripts": {
-    "esporta": "node pacchetto/esporta.mjs"
+    "esporta": "node pacchetto/esporta.mjs",
+    "strumenti": "node pacchetto/strumenti/servi.mjs"
   },
   "devDependencies": {
     "@gltf-transform/core": "4.4.2",
