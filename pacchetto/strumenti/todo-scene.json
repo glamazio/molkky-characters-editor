@@ -1,0 +1,83 @@
+{
+  "versione": 1,
+  "attivita": [
+    {
+      "id": "seduta-contatto",
+      "tipo": "TODO",
+      "testo": "Verificare altezza, orientamento e contatto della seduta con Sit_Chair_Down sul manichino medium.",
+      "completato": false
+    },
+    {
+      "id": "blob-versioni",
+      "tipo": "TODO",
+      "testo": "Definire versioni e compatibilità dei blob per clip e personaggio, evitando dati obsoleti.",
+      "completato": false
+    },
+    {
+      "id": "scene-multipersonaggio",
+      "tipo": "TODO",
+      "testo": "Progettare separatamente il coordinamento di più personaggi e le loro zone nel tempo.",
+      "completato": false
+    },
+    {
+      "id": "6a5f81e5-edfb-4ecc-9688-206134d4ac06",
+      "tipo": "TODO",
+      "testo": "precarica l'ultima scena salvata all'avvio",
+      "completato": false
+    },
+    {
+      "id": "796fd70b-6249-4289-97a7-b88ae2c9f877",
+      "tipo": "TODO",
+      "testo": "Definire e verificare zone di contatto tra seduta e corpo senza escludere tutta la poltrona dai controlli.",
+      "completato": false
+    },
+    {
+      "id": "todo-priorita-esegui",
+      "tipo": "TODO",
+      "testo": "Consentire ordinamento e priorità dei TODO e definire il funzionamento di Esegui ora, compreso il passaggio ad un agente.",
+      "completato": true
+    },
+    {
+      "id": "296a9fba-123f-4ad6-b065-1a0330745d32",
+      "tipo": "TODO",
+      "testo": "permetti l'editing delle coord assets collegati alle anmazioni",
+      "completato": false
+    },
+    {
+      "id": "2bc1c06f-03c0-473a-99aa-a804ecb78397",
+      "tipo": "Bug",
+      "testo": "le coord della seduta collegata a \"siedi\" sono errate",
+      "completato": true
+    },
+    {
+      "id": "layer-ordine",
+      "tipo": "Bug",
+      "testo": "Ordinare i livelli in pianta: tappeto sotto divano e arredi, con selezione coerente.",
+      "completato": true
+    },
+    {
+      "id": "lista-layer",
+      "tipo": "TODO",
+      "testo": "Mostrare sotto la pianta i livelli degli asset e del personaggio.",
+      "completato": true
+    },
+    {
+      "id": "registro-file",
+      "tipo": "TODO",
+      "testo": "Salvare e gestire TODO e bug in un file del progetto accessibile anche all’agente.",
+      "completato": true
+    },
+    {
+      "id": "a67dc120-09d0-4735-95d7-834b0afff3a4",
+      "tipo": "TODO",
+      "testo": "PROVA Sentinella v0: nella copia di prova crea prova-sentinella.txt con il testo Sentinella funziona, poi verifica il contenuto.",
+      "completato": true
+    },
+    {
+      "id": "7f9c1ded-b284-443a-b4e5-3688ebc335e5",
+      "tipo": "TODO",
+      "testo": "preparare suite di test per ogni funzionalità",
+      "completato": false
+    }
+  ]
+}
