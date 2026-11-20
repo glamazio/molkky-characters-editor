@@ -134,8 +134,6 @@ Pacchetti con scheletro umano e clip che `pacchetto/strumenti/riadatta.html` pu�
 - **Fonte del pacchetto:** https://opengameart.org/content/animated-lowpoly-robot, zip `Animated Robot - Oct 2018.zip` (SHA-256 `5128d2cf906835895b931f6c1e764296ba2e01d3a30d809035fc6c1ee8a1c1ee`; dentro solo FBX, OBJ, Blend e `License.txt`, copiato come `License-originale.txt`).
 - **GLB usato:** `RobotExpressive.glb` degli esempi di three.js, tag r153: https://raw.githubusercontent.com/mrdoob/three.js/r153/examples/models/gltf/RobotExpressive/RobotExpressive.glb (SHA-256 `047f5e5fb3bb6d378bd1df16ca6137f2a596c99b3a1b5690b4020c05aaf6f319`), convertito da Don McCurdy. 14 clip: Dance, Death, Idle, Jump, No, Punch, Running, Sitting, Standing, ThumbsUp, Walking, WalkJump, Wave, Yes. Licenza: `Licenza-Quaternius-Robot.txt`.
 
-## `confronto-avatar-3d/modelli/ambiente/`: oggetti del campo di `riadatta.html` (aggiunti il 20 novembre 2026)
+## Campo di `riadatta.html` (20 novembre 2026)
 
-- **Fonte:** KayKit Adventurers 2.0, `Assets/gltf/` della stessa copia del repository GeorgeQLe usata per `kaykit2/` (in locale `assets_originali/kaykit/…/adventurers-2.0/Assets/gltf/`). Licenza CC0 1.0, `Licenza-KayKit2.txt`.
-- Convertiti da gltf (con .bin e texture a parte) a GLB con gltf-transform, senza altre modifiche: `ammo_crate.glb` (cassa), `mug_full.glb` (boccale pieno), `mug_empty.glb` (boccale vuoto). SHA-256 dei gltf d'origine: `2f2a5e1302f89048…`, `2b5c1b1c8905c7d5…`, `7d4331bf03be5944…`.
-- Birilli e bastone del campo sono `birillo-molkky.glb` e `bastone-molkky.glb` del laboratorio (in git); prato, ciuffi d'erba e linea di lancio sono disegnati nel codice della pagina.
+Nessun file: prato, linea, mölkky, cassettina a listelli, birilli numerati e bottiglie sono disegnati in codice in `pacchetto/campo.js`. La prima versione usava cassa e boccali KayKit convertiti in `modelli/ambiente/` (Adventurers 2.0, CC0): non servono più e restano solo in locale.
