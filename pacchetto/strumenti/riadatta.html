@@ -24,6 +24,8 @@
   button.pri { background: var(--acc); color: #222; border-color: var(--acc); font-weight: 600; }
   button:disabled { opacity: .5; cursor: default; }
   #stato { color: var(--deb); }
+  label.chk { display: flex; align-items: center; gap: 6px; color: var(--tx); font-size: 14px; cursor: pointer; }
+  label.chk input { padding: 0; width: 16px; height: 16px; accent-color: var(--acc); }
   details.aiuto { background: var(--pan); border-radius: 10px; padding: 10px 14px; margin: 0 0 12px; color: var(--deb); font-size: 14px; }
   details.aiuto summary { cursor: pointer; color: var(--tx); font-weight: 600; }
   details.aiuto a { color: var(--acc); }
@@ -72,6 +74,7 @@
     <div class="azioni">
       <button class="pri" id="vai" type="submit">Riadatta</button>
       <button id="scarica" type="button" disabled>Scarica il file</button>
+      <label class="chk"><input type="checkbox" id="amb"> Ambiente</label>
       <span id="stato">Caricamento…</span>
     </div>
   </form>
@@ -197,26 +200,87 @@ window.riadatta = async ({ sorgente, clipNome, bersaglio, nome, mappa, fianchiB 
 // ---- anteprima: quattro pose ferme + personaggi in movimento (originale e riadattato) ----
 const luci = sc => { sc.add(new THREE.HemisphereLight(0xffffff, 0x8a8f99, 2.2)); const dl = new THREE.DirectionalLight(0xffffff, 1.6); dl.position.set(2, 4, 3); sc.add(dl); };
 const altezza = o => { o.updateMatrixWorld(true); const b = new THREE.Box3().setFromObject(o); return { h: Math.max(b.max.y - b.min.y, 0.1), y0: b.min.y }; };
-// Una tela con un personaggio che ripete una clip; si gira trascinando.
+// ---- ambiente: un piccolo campo da Mölkky intorno al personaggio ----
+// Prato (disegnato qui), i 12 birilli nella formazione di partenza e il bastone (modelli del laboratorio, *-molkky.glb),
+// la linea di lancio, una cassa con due boccali (KayKit Adventurers 2.0, modelli/ambiente/, CC0; fonti in FONTI.md).
+// Misure pensate per un personaggio KayKit medio (alto 2,54 con l'elmo): per gli altri si scala tutto con l'altezza.
+const A = '/confronto-avatar-3d/modelli/';
+let modelliAmbiente = null;
+const caricaAmbiente = () => modelliAmbiente ||= Promise.all(
+  ['birillo-molkky.glb', 'bastone-molkky.glb', 'ambiente/ammo_crate.glb', 'ambiente/mug_full.glb', 'ambiente/mug_empty.glb'].map(f => loader.loadAsync(A + f).then(g => g.scene)))
+  .then(([birillo, bastone, cassa, boccale, boccaleVuoto]) => ({ birillo, bastone, cassa, boccale, boccaleVuoto }));
+function ombre(o) { o.traverse(m => { if (m.isMesh) { m.castShadow = true; m.receiveShadow = true; } }); return o; }
+function campo(M) {
+  const g = new THREE.Group();
+  const prato = new THREE.Mesh(new THREE.CircleGeometry(3.4, 48), new THREE.MeshStandardMaterial({ color: '#3a6b2f', roughness: 1 }));
+  prato.rotation.x = -Math.PI / 2; prato.receiveShadow = true; g.add(prato);
+  const bordo = new THREE.Mesh(new THREE.RingGeometry(3.4, 3.65, 48), new THREE.MeshStandardMaterial({ color: '#2e5726', roughness: 1 }));
+  bordo.rotation.x = -Math.PI / 2; bordo.position.y = -0.002; g.add(bordo);
+  // ciuffi d'erba sparsi (sempre gli stessi: niente casuale)
+  const ciuffo = new THREE.ConeGeometry(0.035, 0.16, 4), verde = new THREE.MeshStandardMaterial({ color: '#2c5a25', roughness: 1 });
+  for (let i = 0; i < 70; i++) {
+    const a = i * 2.399963, d = 1.0 + (i * 0.61803 % 1) * 2.3, c = new THREE.Mesh(ciuffo, verde);
+    c.position.set(Math.cos(a) * d, 0.07, Math.sin(a) * d); c.rotation.z = ((i % 5) - 2) * 0.12; g.add(c);
+  }
+  // birilli dietro al personaggio, formazione di partenza: 1 2 / 3 10 4 / 5 11 12 6 / 7 9 8
+  const passo = 0.42, righe = [2, 3, 4, 3];
+  righe.forEach((n, r) => { for (let j = 0; j < n; j++) {
+    const b = ombre(M.birillo.clone()); b.scale.setScalar(1.4); b.position.set(0.55 + (j - (n - 1) / 2) * passo, 0, -2.1 - r * passo * 0.87); g.add(b);
+  } });
+  // linea di lancio davanti e bastone a terra accanto ai piedi
+  const linea = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.04, 0.1), new THREE.MeshStandardMaterial({ color: '#b8875a', roughness: 0.9 }));
+  linea.position.set(0, 0.02, 0.85); linea.castShadow = linea.receiveShadow = true; g.add(linea);
+  const bastone = ombre(M.bastone.clone()); bastone.scale.setScalar(1.4); bastone.position.set(-0.8, 0.075, 0.35); bastone.rotation.set(0, 0.7, 0); g.add(bastone);
+  // cassa con due boccali, di lato
+  const cassa = ombre(M.cassa.clone()); cassa.position.set(1.45, 0, -0.5); cassa.rotation.y = -0.4; g.add(cassa);
+  const b1 = ombre(M.boccale.clone()); b1.scale.setScalar(0.45); b1.position.set(1.35, 0.46, -0.45); b1.rotation.y = 0.5; g.add(b1);
+  const b2 = ombre(M.boccaleVuoto.clone()); b2.scale.setScalar(0.45); b2.position.set(1.6, 0.46, -0.6); b2.rotation.y = -1.2; g.add(b2);
+  return g;
+}
+let conAmbiente = true;
+try { conAmbiente = localStorage.getItem('riadatta-ambiente') !== 'no'; } catch {}
+
+// Una tela con un personaggio che ripete una clip; si gira trascinando (personaggio e ambiente insieme).
+const visori = [];
 function visore(id) {
   const el = document.getElementById(id);
   const r = new THREE.WebGLRenderer({ canvas: el, antialias: true }); r.outputColorSpace = THREE.SRGBColorSpace;
-  const sc = new THREE.Scene(); sc.background = new THREE.Color('#3b3a6e'); luci(sc);
-  const v = { obj: null, mixer: null, cam: null, orologio: new THREE.Clock() };
+  r.shadowMap.enabled = true; r.shadowMap.type = THREE.PCFSoftShadowMap;
+  const sc = new THREE.Scene(); sc.background = new THREE.Color('#3b3a6e');
+  sc.add(new THREE.HemisphereLight(0xffffff, 0x8a8f99, 2.0));
+  const sole = new THREE.DirectionalLight(0xffffff, 1.8); sole.castShadow = true; sole.shadow.mapSize.set(1024, 1024); sole.shadow.bias = -0.0005;
+  sc.add(sole, sole.target);
+  const mondo = new THREE.Group(); mondo.rotation.y = 0.6; sc.add(mondo);
+  const v = { obj: null, mixer: null, cam: null, amb: null, orologio: new THREE.Clock() };
   let x0 = null;
   el.addEventListener('pointerdown', e => { x0 = e.clientX; el.setPointerCapture(e.pointerId); });
-  el.addEventListener('pointermove', e => { if (x0 === null || !v.obj) return; v.obj.rotation.y += (e.clientX - x0) * 0.01; x0 = e.clientX; });
+  el.addEventListener('pointermove', e => { if (x0 === null || !v.obj) return; mondo.rotation.y += (e.clientX - x0) * 0.01; x0 = e.clientX; });
   el.addEventListener('pointerup', () => { x0 = null; });
   r.setAnimationLoop(() => { if (!v.mixer) return; v.mixer.update(v.orologio.getDelta()); r.render(sc, v.cam); });
+  // Inquadratura, luce e ambiente in proporzione al personaggio.
+  v.sistema = async () => {
+    if (!v.obj) return;
+    const { h, y0 } = v.misura, k = h / 2.54, largo = conAmbiente ? 1.12 : 1;
+    v.cam = new THREE.PerspectiveCamera(30, 300 / 360, 0.01, 1000);
+    v.cam.position.set(0, y0 + h * (conAmbiente ? 1.35 : 0.55), h * 3.4 * largo); v.cam.lookAt(0, y0 + h * (conAmbiente ? 0.3 : 0.45), conAmbiente ? -0.5 * k : 0);
+    sole.position.set(2.5 * k, 5 * k, 3 * k); sole.target.position.set(0, y0, 0);
+    Object.assign(sole.shadow.camera, { left: -4 * k, right: 4 * k, top: 4 * k, bottom: -4 * k, near: 0.1, far: 15 * k }); sole.shadow.camera.updateProjectionMatrix();
+    if (v.amb) { mondo.remove(v.amb); v.amb = null; }
+    if (!conAmbiente) return;
+    const M = await caricaAmbiente().catch(() => null);
+    if (!M || !conAmbiente || v.amb) return;
+    v.amb = campo(M); v.amb.scale.setScalar(k); v.amb.position.y = y0; mondo.add(v.amb);
+  };
   v.mostra = (obj, clip) => {
     if (v.mixer) v.mixer.stopAllAction();
-    if (v.obj) sc.remove(v.obj);
-    v.obj = obj; obj.rotation.y = 0.6; obj.position.set(0, 0, 0); sc.add(obj);
+    if (v.obj) mondo.remove(v.obj);
+    v.obj = obj; obj.rotation.y = 0; obj.position.set(0, 0, 0); mondo.add(ombre(obj));
     v.mixer = new THREE.AnimationMixer(obj); v.mixer.clipAction(clip).play(); v.mixer.setTime(0);
-    const { h, y0 } = altezza(obj);
-    v.cam = new THREE.PerspectiveCamera(30, 300 / 360, 0.01, 1000); v.cam.position.set(0, y0 + h * 0.55, h * 3.4); v.cam.lookAt(0, y0 + h * 0.45, 0);
+    v.misura = altezza(obj);
+    v.sistema();
     v.orologio.getDelta();
   };
+  visori.push(v);
   return v;
 }
 const vista = {};
@@ -298,6 +362,13 @@ $('f').addEventListener('submit', async e => {
       `.  Riga per FONTI.md: | \`${ultimo.file}\` | \`${nome}\` (${r.durata.toFixed(1).replace('.', ',')} s) | ${fonte} | prova su ${p.id}, partenza ${$('part').value || 'legatura'}, riposo sorgente ${$('riposo').value ? nomeClip($('riposo').value) : 'primo fotogramma'} |`;
   } catch (err) { stato('Errore: ' + err.message, true); }
   $('vai').disabled = false;
+});
+// Ambiente sì/no (ricordato in questo browser): vale per le due viste in movimento.
+$('amb').checked = conAmbiente;
+$('amb').addEventListener('change', () => {
+  conAmbiente = $('amb').checked;
+  try { localStorage.setItem('riadatta-ambiente', conAmbiente ? 'si' : 'no'); } catch {}
+  visori.forEach(v => v.sistema());
 });
 $('scarica').addEventListener('click', () => {
   if (!ultimo) return;

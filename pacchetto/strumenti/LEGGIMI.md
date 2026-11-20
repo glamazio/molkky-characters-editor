@@ -51,6 +51,7 @@ Esclusi: i mostri Blob e volanti (niente gambe), l'omino KayKit Animations 1.2 (
   - quattro istanti fermi (10%, 40%, 70%, fine);
   - gli abbinamenti delle ossa trovati;
   - la **riga pronta per `pacchetto/clip/FONTI.md`**, con pacchetto, file, clip, licenza e riferimenti usati.
+- **Ambiente** (casella accanto ai pulsanti, ricordata nel browser): attorno ai personaggi in movimento mette un piccolo campo da Mölkky, con prato, i 12 birilli nella formazione di partenza dietro al personaggio, la linea di lancio, il bastone a terra e una cassa con due boccali. Le misure sono pensate per un KayKit medio e si scalano con l'altezza del personaggio. Si gira tutto insieme trascinando; le ombre sono vere. Oggetti e fonti: `FONTI.md`, sezione `modelli/ambiente/`. Serve solo a vedere la clip in situazione: nel file scaricato non entra.
 - **Scarica il file**: salva `Rig_<Scheletro>_<Nome>.glb`. Il file contiene solo lo scheletro di prova (niente mesh) e la clip; nella scena è scritta la fonte (`extras.fonte`).
 
 ### Come funziona
