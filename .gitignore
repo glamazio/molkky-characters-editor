@@ -10,3 +10,11 @@ confronto-avatar-3d/modelli/Textures/
 node_modules/
 # Copie di sicurezza automatiche di Blender
 *.blend1
+
+# Pacchetti originali scaricati, copie di lavoro e risultati di esecuzione locali.
+assets_originali/
+output/
+.playwright-cli/
+
+# Accessori realizzati per il progetto, non parte dei pacchetti scaricati.
+!confronto-avatar-3d/modelli/kaykit2/accessori/*.glb
