@@ -1,0 +1,42 @@
+{
+  "versione": 1,
+  "animazioni": [
+    {
+      "id": "kaykit-medium-death-a",
+      "nome": "Death_A · KayKit medium",
+      "evento": "sconfitta",
+      "file": "/confronto-avatar-3d/modelli/kaykit2/animazioni/Rig_Medium_General.glb",
+      "clip": "Death_A",
+      "blob": "./blob-death-a-medium.json",
+      "rig": "medium",
+      "tipo": "statica",
+      "campionamento_hz": 30,
+      "misura_prototipo": { "larghezza": 1.98, "profondita": 1.01, "unita": "unità KayKit", "riferimento": "Mannequin_Medium", "approssimata": true },
+      "zona": "ingombro campionato del manichino, rettangolo conservativo in pianta",
+      "stato": "prototipo da verificare visivamente",
+      "note": "La direzione della caduta e i margini non sono ancora approvati. Il tappeto è ammesso come superficie calpestabile."
+    },
+    {
+      "id": "kaykit-medium-sit-chair-down",
+      "nome": "Sit_Chair_Down · KayKit medium",
+      "evento": "prova-seduta",
+      "file": "/confronto-avatar-3d/modelli/kaykit2/animazioni/Rig_Medium_Simulation.glb",
+      "clip": "Sit_Chair_Down",
+      "rig": "medium",
+      "tipo": "statica",
+      "richiede": "seduta",
+      "stato": "prototipo da verificare visivamente"
+    },
+    {
+      "id": "kaykit-medium-siedi-utente",
+      "nome": "siedi · clip salvata",
+      "evento": "prova-seduta",
+      "file": "./Rig_Medium_siedi-prova.glb",
+      "clip": "siedi",
+      "rig": "medium",
+      "tipo": "statica",
+      "richiede": "seduta",
+      "stato": "prova importata, da verificare visivamente"
+    }
+  ]
+}
