@@ -13,6 +13,8 @@
   body { margin: 0; background: var(--sf); color: var(--tx); font: 15px/1.45 system-ui, sans-serif; }
   main { max-width: 960px; margin: 0 auto; padding: 16px; }
   h1 { font-size: 20px; margin: 0 0 4px; }
+  .firma { display: flex; align-items: center; gap: 7px; margin: 0 0 8px; color: var(--deb); font-size: 12px; letter-spacing: .02em; }
+  .firma svg { flex: none; }
   p.sub { margin: 0 0 16px; color: var(--deb); }
   form { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px 14px; background: var(--pan); padding: 14px; border-radius: 10px; }
   label { display: grid; gap: 4px; font-size: 13px; color: var(--deb); }
@@ -35,6 +37,18 @@
 </style>
 <body>
 <main>
+  <div class="firma" title="Strumento scritto da Claude per il laboratorio Mölkky">
+    <!-- Segno disegnato a mano per questa pagina (raggi attorno a un centro), non il logo ufficiale. -->
+    <svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true">
+      <g fill="#d97757">
+        <path d="M16 2 L18 13 L16 16 L14 13 Z"/><path d="M16 30 L14 19 L16 16 L18 19 Z"/>
+        <path d="M2 16 L13 14 L16 16 L13 18 Z"/><path d="M30 16 L19 18 L16 16 L19 14 Z"/>
+        <path d="M6 6 L14.5 12.5 L16 16 L12.5 14.5 Z"/><path d="M26 26 L17.5 19.5 L16 16 L19.5 17.5 Z"/>
+        <path d="M26 6 L19.5 14.5 L16 16 L17.5 12.5 Z"/><path d="M6 26 L12.5 17.5 L16 16 L14.5 19.5 Z"/>
+      </g>
+    </svg>
+    <span>fatto con Claude</span>
+  </div>
   <h1>Riadatta una clip</h1>
   <p class="sub">Prende un'animazione da un altro pacchetto (Quaternius: Universal Animation Library, Robot, animati, donna, RPG, mostri; KayKit 1.0) e la mette su uno scheletro KayKit 2.0. Le ossa si abbinano da sole dai nomi. La clip vale per tutti i personaggi dello stesso scheletro (medio o grande). Il file scaricato va in <code>pacchetto/clip/</code>, con la riga in <code>clip/FONTI.md</code>; poi la clip si usa in <code>pacchetto.json</code> col suo nome.</p>
   <details class="aiuto">
